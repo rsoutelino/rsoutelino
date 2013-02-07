@@ -1,0 +1,48 @@
+.masthead {
+	padding: 50px 0 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	color: white;
+}
+.jumbotron {
+	/*position: relative;*/
+/*	padding: 50px 0;
+	color: white;*/
+	text-align: center;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, .4), 0 0 30px rgba(0, 0, 0, .075);
+/*	background: #020031;*/
+	background: -moz-linear-gradient(45deg, #A5A7C1 0%, #D5E1F0 100%);
+	/*background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6D3353));*/
+	background: -webkit-linear-gradient(45deg, #A5A7C1 0%,#D5E1F0 100%);
+	background: -o-linear-gradient(45deg, #A5A7C1 0%,#D5E1F0 100%);
+	background: -ms-linear-gradient(45deg, #A5A7C1 0%,#D5E1F0 100%);
+	background: linear-gradient(45deg, #A5A7C1 0%,#D5E1F0 100%);
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 );*/
+	-webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, .2), inset 0 -3px 7px rgba(0, 0, 0, .2);
+	/*-moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);*/
+	box-shadow: inset 0 3px 7px rgba(0, 0, 0, .2), inset 0 -3px 7px rgba(0, 0, 0, .2);
+}
+user agent stylesheetdiv {
+	display: block;
+}
+Pseudo ::after element
+
+.jumbotron::after {
+	content: '';
+	display: block;
+	/*position: absolute;*/
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: url(../img/bs-docs-masthead-pattern.png) repeat center center;
+	opacity: .4;
+}
+Inherited from body
+
+/*body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #333;
+}*/

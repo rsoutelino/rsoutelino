@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{=response.title or request.title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="{{=response.meta.author}}">
+    <meta name="google-site-verification" content="" />
+
+    <!-- Le styles -->
+    <!-- <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"> -->
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <!-- <link href="../static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> -->
+     {{
+      response.files.append(URL('static','bootstrap/css/bootstrap.css'))
+      response.files.append(URL('static','bootstrap/css/head.css'))
+      response.files.append(URL('static','bootstrap/css/bootstrap-responsive.css'))
+      if response.menu:
+      response.files.append(URL('static','bootstrap/css/bootstrap-responsive.css'))
+      response.files.append(URL('static','js/superfish.js'))
+      pass}}
+
+      {{include 'web2py_ajax.html'}}
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar" $('#bs-docs-sidebar').scrollspy()>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="{{=URL('default','index')}}">@rsoutelino</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="{{=URL('default','index')}}">Home</a></li>
+
+              <li><a href="{{=URL('contact','contact')}}">Contact</a></li>
+            </ul>
+            <form class="navbar-form pull-right">{{='auth' in globals() and auth.navbar(separators=(' ',' | ',''))}}
+              <!-- <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button> -->
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="jumbotron masthead">
+        <div class="container">
+          <div class="row">
+            <div class="span2">
+              <img src="{{=URL('static','images/soutelino.png')}}" alt="Image description" title="Image title" width="80" height="160" position="center"/>
+            </div>
+            <div class="span8">
+              <h1>Rafael Soutelino - Physical Oceanographer</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container">
+
+      <div>
+        {{include}}
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2012</p>
+        <div class="row">
+          <div class="span4"><div id="clustrmaps-widget"></div><script type="text/javascript">var _clustrmaps = {'url' : 'http://www.rsoutelino.com', 'user' : 1076846, 'server' : '4', 'id' : 'clustrmaps-widget', 'version' : 1, 'date' : '2013-02-05', 'lang' : 'en', 'corners' : 'square' };(function (){ var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'http://www4.clustrmaps.com/counter/map.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);})();</script><noscript><a href="http://www4.clustrmaps.com/user/61e106e6e"><img src="http://www4.clustrmaps.com/stats/maps-no_clusters/www.rsoutelino.com-thumb.jpg" alt="Locations of visitors to this page" /></a></noscript>
+        </div>
+          <div class="span4">
+              <a href="http://www.fsf.org/register_form?referrer=10132"><img src="{{=URL('static','images/FSFbuttom.png')}}" alt="[FSF Associate Member]" width="88" height="31" /></a>
+            </div>
+          </div>
+
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!--[if lt IE 7 ]>
+  <script src="{{=URL('static','js/dd_belatedpng.js')}}"></script>
+  <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+  <![endif]-->
+  {{if response.google_analytics_id:}}<script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', '{{=response.google_analytics_id}}']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })(); </script> {{pass}}
+
+    <script src="rsoutelino/static/bootstrap/js/bootstrap.js"></script>
+    <script src="rsoutelino/static/bootstrap/js/bootstrap.min.js"></script>
+
+    {{
+      response.files.append(URL('static','bootstrap/js/bootstrap.js'))
+      response.files.append(URL('static','bootstrap/js/bootstrap.min.js'))
+    }}
+
+  </body>
+</html>

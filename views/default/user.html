@@ -1,0 +1,17 @@
+{{extend "hm.html"}}
+
+<div class="row">  
+	{{if request.args(0) in ['register', 'login']:}}
+		<div class="span6">
+		  <h2>Login</h2>	
+		  {{=objects.login}}
+		</div>
+		<div class="span6">
+		  <h2>Register</h2>	
+		  {{=objects.register}}
+		</div>
+	{{else:}}
+	    <h2>{{=request.args(0)}}</h2>
+		{{=objects.form}}
+	{{pass}}   
+</div>
