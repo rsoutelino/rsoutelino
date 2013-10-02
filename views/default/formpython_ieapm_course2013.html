@@ -1,0 +1,239 @@
+{{extend 'hm.html'}}
+
+<br><br>
+{{for arquivo in tmp:
+}}
+
+<button class="btn btn-smaller">
+<a href="{{=URL("default","download",args=arquivo.file_arquivo)}}"> Faça aqui o download do material do curso </a>
+</button>
+
+<br><br>
+{{pass}}
+
+<br><br>
+
+<h2>Introdução</h2>
+    <p>
+        Python é uma linguagem de programação interpretada que pode ser usada
+        interativamente. Isto facilita o desenvolvimento de códigos científicos
+        para manipular conjuntos de dados extensos e complexos programas computacionais.
+        Adicionalmente, o Python por si só possui uma extensa gama de módulos
+        para executar tarefas do dia a dia de um usuário de sistema operacional,
+        que usualmente requerem o uso de múltiplas linguagens. A base de
+        toolboxes voltadas à computacão científica, disponíveis gratuitamente,
+        é notavelmente extensa. Módulos como Numpy, Scipy e Matplotlib
+        possibilitam a execucão de tarefas complexas com matrizes de dados,
+        com bibliotecas matemáticas para manipulacão e análise de dados. Python
+        tem bibliotecas disponíveis para portar códigos C e Fortran em sua
+        linguagem, o que torna ultra-rápidas tarefas que são conhecidamente mais
+        lentas em linguagens interpretadas. Muitas ferramentas voltadas à
+        Oceanografia e Ciências da Terra ja estão disponíveis, como 1)
+        manipulacão de formatos como NetCDF, HDF, GRIB; 2) OpenDAP; 3) análise
+        harmônica de maré; 4) cálculo de propriedades termodinâmicas da água do
+        mar e 4) visualizacão gráfica/plotagem de dados totalmente customizável,
+        com qualidade para publicacão. Python é ideal para lidar com pré- e
+        pós-processamento associados a modelagem numérica.
+    </p>
+
+    <br>
+
+    <h4>Porque não MATLAB?</h4>
+        <p>
+            Texto retirado da homepage do pesquisador <a href="http://pong.tamu.edu/~rob/python/" target="_blank">Rob Hetland</a>.
+            <br><br>
+            MATLAB pode ser considerada atualmente a linguagem padrão para análise
+            e plotagem em aplicacões oceanográficas, tanto para modelagem numérica
+            como para oceanografia observacional. Tal fato se deve a razões
+            históricas, e não só pelo MATLAB em si, mas pelo surgimento das
+            primeiras toolboxes voltadas a Oceanografia e Ciências da Terra.
+            Entretanto, muitas desvantagens e problemas associados ao uso do
+            MATLAB podem ser citados, e são amplamente conhecidos pela comunidade.
+            Lentidão, instabilidade, vazamentos de memória, bugs em geracão de
+            figuras, servidores de licensa e código fechado são exemplos. Todos
+            convivem com estes problemas porque até certo ponto era a única
+            ferramenta disponível nesse segmento. É uma linguagem flexível,
+            dinâmica, e uma vez que aprende-se a trabalhar neste arcabouço
+            matricial, ela pode ser rápida e poderosa. Em síntese, usamos MATLAB
+            praticamente pela mesma razão que usamos qualquer ferramenta: não
+            tem nada melhor disponível. Migrar para uma outra linguagem implica
+            no aprendizado de um novo conjunto de técnicas de programação e
+            geração de uma nova gama de toolboxes. Este investimento inicial
+            certamente demanda tempo, portanto espera-se que haja importantes
+            benefícios. Acreditamos que migrar para Python valha o esforço pelas
+            seguintes razões:
+
+            <ul>
+                <li> Python é uma linguagem de programação extremamente poderosa
+                    e moderna. Isto significa que pode-se usar Python não apenas para
+                    análise e plotagem, mas também para as demais tarefas que a
+                    computação científica possibilita, como gerenciamento de arquivos
+                    e diretórios, automatização de tarefas, downloads e interatividade
+                    com web em geral, criação de interfaces gráficas.
+                <li> Python é verdadeiramente orientada a objeto. Isto significa
+                    que os programas tendem a ficar mais fortes, claros, flexíveis e
+                    fáceis de desenvolver, ler e debugar, por causa da natureza da
+                    programação em Python. É muito simples converter/organizar um
+                    conjunto randômico de ferramentas em um pacote coeso para uma
+                    dada finalidade.
+                <li> Existem muitos pacotes disponíveis gratuitamente que executam
+                    tarefas que comummente queremos fazer. Em particular, os pacotes
+                    Numpy e Matplotlib têm uma interface muito similar à do MATLAB,
+                    tornando a curva de aprendizado bem reduzida.
+            </ul>
+            <br>
+            <h5> Algumas vantagens do Python em relação ao Matlab:</h5>
+            <br>
+            <ul>
+                <li> Python é uma linguagem de script verdadeira e poderosa. Módulos
+                    científicos são escritos nesta filosofia. Por exemplo, a criação de
+                    classes é muito simples e funcões podem ser passadas como argumentos
+                    de classes ou outras funções, funcionalidade esta não disponível no
+                    MATLAB. Existe um número de tipos de variáveis bem maior, que são
+                    muito poderosos, como listas, dicionários e tuplas.
+                <li> É fácil de portar códigos escritos em C e Fortran. Existem
+                    inúmeras ferramentas para isto e a maioria das ferramentas
+                    científicas já escritas em Python se aproveitam disso, então
+                    o código roda super-rápido.
+                <li> Python é <strong>open source, gratuito</strong>, portável,
+                    está em constante desenvolvimento e lançamento de novas versões
+                    ocorrem com uma frequência muito maior que no MATLAB. A comunidade
+                    de desenvolvedores é extensa e ativa. Python roda em todos os
+                    computadores modernos e arquiteruras, podendo ser inclusive
+                    executado em tablets e smartphones.
+            </ul>
+        </p>
+
+<br>
+<h2>Estrutura do Curso</h2>
+<br>
+<ul>
+    <li> <strong> Aula 1: </strong> Conceitos básicos de Python e instalação.
+        Listas, tuplas dicionários, strings, condicionais, loops, exceções. Programação
+        abstrata. Manipulacão de arquivos. Tutoriais de instalação do Python,
+        bibliotecas básicas e ferramentas para programação em modo interativo
+        (em sistema Linux).
+    <li> <strong> Aula 2: </strong> Python para geocientistas, Módulo 1: trabalhando
+        com arrays (matrizes). Criação e manipulação de arrays usando o Numpy.
+        Indexação, fatiamento e operações com arrays. Manipulações básicas de dados,
+        como interpolacões e aplicação de máscara. Leitura de dados ascii. Plotagem
+        uni- e bi-dimensional de dados.
+    <li> <strong> Aula 3: </strong> Python para geocientistas, Módulo 2: trabalhando
+        netCDF e mapas. Leitura e criação de arquivos netCDF. Manipulacão e investigação
+        de grandes conjuntos de dados. Plotagem de dados em mapas.
+    <li> <strong> Aula 4: </strong> Técnicas avançadas de programação científica.
+        Interação com o sistema, automatização de tarefas, interação com arquivos.
+        Orientação à objeto, funções, classes, encapsulamento. Desenvolvimento de
+        interface gráfica.
+</ul>
+
+<br>
+<h2>Informações para os participantes </h2>
+<br>
+    <h3>Requerimentos Mínimos</h3>
+<br>
+    <p>
+       É desejável que os inscritos tenham experiência prévia em programação
+       científica. Moderada experiência com Matlab e/ou GMT, Ferret, ou outra
+       linguagem similar otimizará o aprendizado. Nós recomendamos e encorajamos
+       o uso de sistema operacional Linux para qualquer tarefa voltada ao uso
+       científico de computadores, mas os conceitos e ferramentas adotadas no
+       curso podem rodar em qualquer plataforma (Windows, Linux, MacOS, etc).
+       O curso será ministrado na forma de projeção em datashow do ambiente de
+       trabalho computacional em tempo real. Idealmente, os interessados devem
+       trazer um notebook com as ferramentas previamente instaladas (instruções
+       a seguir). Não teremos computadores e internet disponíveis no local do
+       curso, portanto frizamos a importância de trazer consigo as máquinas já
+       preparadas. É possível o acesso à internet nas proximidades, caso seja
+       imprescindível. Caso alguns não possuam notebook, é possível trabalhar em duplas.
+    </p>
+<br>
+    <h3>Preparação de notebooks para o curso</h3>
+<br>
+    <p>
+       Independentemente do sistema operacional, os softwares que precisaremos são os seguintes:
+       <ul>
+            <li> Editor de texto para desenvolvimento de código.
+                À gosto do usuário, mas sugerimos <a href="http://www.sublimetext.com/" target="_blank">SublimeText2</a>
+            <li> <a href="http://python.org/" target="_blank">Python 2.7</a>
+            <li> <a href="http://ipython.org/" target="_blank">iPython</a> mais recente
+            <li> Módulos e bibliotecas Python:
+                <a href="http://scipy.org/" target="_blank">Scipy</a>,
+                <a href="http://matplotlib.org/" target="_blank">Matplotlib</a>,
+                <a href="http://matplotlib.org/basemap/" target="_blank">Basemap</a> toolkit do Matplotlib,
+                <a href="http://code.google.com/p/netcdf4-python/" target="_blank">netCDF4</a>,
+                <a href="http://code.google.com/p/python-seawater/" target="_blank">Seawater</a> e
+                <a href="http://www.pydap.org/" target="_blank">Pydap</a>
+        </ul>
+    </p>
+    <br>
+        <h4>Instalação multiplataforma de todos os pacotes</h4>
+        <p>
+            Para os menos experientes, sugerimos o uso de uma distribuição para python
+            científico chamada “Enthought Python Distribution”
+            (<a href="http://www.enthought.com/products/epd.php" target="_blank">EPD</a>).
+            Esta tem instaladores automáticos para Windows, Linux e Mac,
+            com todos os pacotes necessários. O ideal é fazer o download da versão
+            “academic”, pois a “free” não possui alguns pacotes essenciais.
+            Para baixar a “academic”, é necessário um e-mail final “.edu”, ou
+            entrar em contato com eles para pedir a liberação para uso acadêmico
+            em instituição aqui no Brasil.
+        </p>
+<br>
+        <h4>Instalação em sistema operacional Debian/Ubuntu Linux via apt-get</h4>
+        <p>
+            Neste caso, todos os pacotes são baixados e compilados para o seu
+            sistema em particular, ocupando menos espaço e com performance
+            ligeiramente melhor. Segue as instruções abaixo:
+            <ul>
+                <li> <p style="font-family:monospace"> sudo apt-get install
+                    build-essential gfortran nco libnetcdf-dev libhdf5-serial
+                    libhdf5-serial-dev libkernlib1-gfortran netcdf-bin hdf5-tools</p>
+                <li> Instalar o <a href="http://www.unidata.ucar.edu/software/netcdf/" target="_blank">netcdf</a>
+                    mais recente para sua arquitetura.
+                <li> <p style="font-family:monospace"> sudo apt-get install
+                    python-scipy python-matplotlib python-mpltoolkits.basemap
+                    ipython python-pip python-setuptools python-wxtools
+                    python-wxversion python-netcdf</p>
+                <li> <p style="font-family:monospace"> sudo easy_install seawater pydap wx netcdf4 </p>
+            </ul>
+        </p>
+<br>
+    <h3>Leitura recomendada</h3>
+<br>
+    <ul>
+        <li> <a href="http://pong.tamu.edu/~rob/python/" target="_blank">Rob Hetland</a>: página interessante sobre Python para oceanografia, com vídeo-aulas.
+        <li> <a href="http://www.imr.no/~bjorn/python/links.html" target="_blank">Links</a> úteis para oceanógrafos que usam Python.
+        <li> <a href="http://mathesaurus.sourceforge.net/matlab-numpy.html" target="_blank">Mathesaurus</a>: correspondência de comandos entre MATLAB e Numpy.
+        <li> <a href="http://www.scipy.org/" target="_blank">Scipy</a>: maior biblioteca científica escrita em Python.
+        <li> <a href="http://matplotlib.org/" target="_blank">Matplotlib</a>: biblioteca de visualização de dados mais utilizada, com sintaxe similar ao MATLAB.
+        <li> <a href="http://hetland.org/writing/instant-python.html" target="_blank">Hetland.org</a>: curso relâmpago de Python.
+        <li> <a href="http://www.python.org/dev/peps/pep-0008/" target="_blank">Pep8</a>: guia de estilo e convenções para código Python. (último, mas não menos importante)
+    </ul>
+
+<br><br>
+
+<h2>  Formulário de Inscrição </h2>
+
+Curso já realizado!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
