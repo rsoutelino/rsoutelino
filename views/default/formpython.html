@@ -1,21 +1,19 @@
 {{extend 'hm.html'}}
+
 <br><br>
-<h1>Python para computação científica, com ênfase em geociências</h1>
-<br>
-    <p>
-        O Instituto de Estudos do Mar Almirante Paulo Moreira (IEAPM) oferecerá
-        um curso de curta duração em programação científica com a linguagem Python.
-        O curso será realizado nas dependências do IEAPM e a participação será por
-        convite, devido ao limitado número de vagas (20). A iniciativa partiu
-        de uma colaboração entre a Divisão de Dinâmica dos Oceanos do IEAPM e o
-        LAMCE-COPPE, no intuito de capacitar ambos seus grupos e difundir a
-        linguagem no meio científico. <strong>Aos interessados, favor preencher
-        o formulário de inscrição no final desta página.</strong>
-    </p>
+{{for arquivo in tmp:
+}}
+
+<button class="btn btn-smaller">
+<a href="{{=URL("default","download",args=arquivo.file_arquivo)}}"> Download de material didático </a>
+</button>
+
+<br><br>
+{{pass}}
 
 <br><br>
 
-<h2>Introdução</h2>
+<h2>Dicas de introdução ao Python como ferramenta para Oceanógrafos </h2>
     <p>
         Python é uma linguagem de programação interpretada que pode ser usada
         interativamente. Isto facilita o desenvolvimento de códigos científicos
@@ -106,7 +104,7 @@
             </ul>
         </p>
 
-<br>
+<!--<br>
 <h2>Estrutura do Curso</h2>
 <br>
 <ul>
@@ -127,52 +125,14 @@
         Interação com o sistema, automatização de tarefas, interação com arquivos.
         Orientação à objeto, funções, classes, encapsulamento. Desenvolvimento de
         interface gráfica.
-</ul>
-<br>
-<h2>Informações Gerais </h2>
-<br>
-<p>
-    O curso será realizado no <a href="http://www.ieapm.mar.mil.br" target="_blank">IEAPM</a>,
-    na Rua Kioto, 253, Praia dos Anjos, Arraial do Cabo, RJ, pelos professores: <br>
-    <a href="http://www.rsoutelino.com" target="_blank">Rafael Soutelino</a> <br>
-    <a href="http://lattes.cnpq.br/8677169785789127" target="_blank">André Lobato</a><br><br>
-    O curso é gratuito, mas as despesas de deslocamento e hospedagem serão de
-    responsabilidade do participante.
-</p>
-<br>
-<ul>
-    <li> <strong> Abertura das Inscrições: </strong> 28 de Janeiro de 2013
-    <li> <strong> Encerramento das Inscrições: </strong> 17 de Março de 2013
-    <li> <strong> Data limite para comunicação das incrições aceitas: </strong> 19 de março de 2103
-    <li> <strong> Data do curso: </strong> 25 e 26 de Março de 2013 <b style="color:red"> => a confirmar!!!</b>
-    <li> <strong> Número de vagas: </strong> 20
-</ul>
+</ul> -->
 
 <br>
-<h2>Informações para os participantes </h2>
-<br>
-    <h3>Requerimentos Mínimos</h3>
+<h2> Tutorial de instalação </h2>
 <br>
     <p>
-       É desejável que os inscritos tenham experiência prévia em programação
-       científica. Moderada experiência com Matlab e/ou GMT, Ferret, ou outra
-       linguagem similar otimizará o aprendizado. Nós recomendamos e encorajamos
-       o uso de sistema operacional Linux para qualquer tarefa voltada ao uso
-       científico de computadores, mas os conceitos e ferramentas adotadas no
-       curso podem rodar em qualquer plataforma (Windows, Linux, MacOS, etc).
-       O curso será ministrado na forma de projeção em datashow do ambiente de
-       trabalho computacional em tempo real. Idealmente, os interessados devem
-       trazer um notebook com as ferramentas previamente instaladas (instruções
-       a seguir). Não teremos computadores e internet disponíveis no local do
-       curso, portanto frizamos a importância de trazer consigo as máquinas já
-       preparadas. É possível o acesso à internet nas proximidades, caso seja
-       imprescindível. Caso alguns não possuam notebook, é possível trabalhar em duplas.
-    </p>
-<br>
-    <h3>Preparação de notebooks para o curso</h3>
-<br>
-    <p>
-       Independentemente do sistema operacional, os softwares que precisaremos são os seguintes:
+       Aqui forneceremos dicas para fazer uma instalação de python com bibliotecas para uso científico.
+       Independentemente do sistema operacional, os softwares necessários são os seguintes:
        <ul>
             <li> Editor de texto para desenvolvimento de código.
                 À gosto do usuário, mas sugerimos <a href="http://www.sublimetext.com/" target="_blank">SublimeText2</a>
@@ -191,8 +151,8 @@
         <h4>Instalação multiplataforma de todos os pacotes</h4>
         <p>
             Para os menos experientes, sugerimos o uso de uma distribuição para python
-            científico chamada “Enthought Python Distribution”
-            (<a href="http://www.enthought.com/products/epd.php" target="_blank">EPD</a>).
+            científico chamada “Enthought Canopy”
+            (<a href="http://www.enthought.com/products/epd.php" target="_blank">Canopy</a>).
             Esta tem instaladores automáticos para Windows, Linux e Mac,
             com todos os pacotes necessários. O ideal é fazer o download da versão
             “academic”, pois a “free” não possui alguns pacotes essenciais.
@@ -207,16 +167,16 @@
             sistema em particular, ocupando menos espaço e com performance
             ligeiramente melhor. Segue as instruções abaixo:
             <ul>
-                <li> <p style="font-family:monospace"> sudo apt-get install
+                <li> <p style="font-family:monospace"> <code> sudo apt-get install
                     build-essential gfortran nco libnetcdf-dev libhdf5-serial
-                    libhdf5-serial-dev libkernlib1-gfortran netcdf-bin hdf5-tools</p>
+                    libhdf5-serial-dev libkernlib1-gfortran netcdf-bin hdf5-tools </code> </p>
                 <li> Instalar o <a href="http://www.unidata.ucar.edu/software/netcdf/" target="_blank">netcdf</a>
                     mais recente para sua arquitetura.
-                <li> <p style="font-family:monospace"> sudo apt-get install
+                <li> <p style="font-family:monospace"> <code> sudo apt-get install
                     python-scipy python-matplotlib python-mpltoolkits.basemap
                     ipython python-pip python-setuptools python-wxtools
-                    python-wxversion python-netcdf</p>
-                <li> <p style="font-family:monospace"> sudo easy_install seawater pydap wx netcdf4 </p>
+                    python-wxversion python-netcdf </code> </p>
+                <li> <p style="font-family:monospace"> <code> sudo easy_install seawater pydap wx netcdf4 </code> </p>
             </ul>
         </p>
 <br>
@@ -229,14 +189,12 @@
         <li> <a href="http://www.scipy.org/" target="_blank">Scipy</a>: maior biblioteca científica escrita em Python.
         <li> <a href="http://matplotlib.org/" target="_blank">Matplotlib</a>: biblioteca de visualização de dados mais utilizada, com sintaxe similar ao MATLAB.
         <li> <a href="http://hetland.org/writing/instant-python.html" target="_blank">Hetland.org</a>: curso relâmpago de Python.
+        <li> <a href="http://ocefpaf.github.io/" target="_blank">Python4oceanographers</a>: blog muito útil para análise de dados (e mais...) usando python.
         <li> <a href="http://www.python.org/dev/peps/pep-0008/" target="_blank">Pep8</a>: guia de estilo e convenções para código Python. (último, mas não menos importante)
     </ul>
 
 <br><br>
 
-<h2>  Formulário de Inscrição </h2>
-
-<iframe src="https://docs.google.com/forms/d/1-kkP19U0VpoP7XkSXpxcKT4RsziXBt5TCTEzXuRpY5w/viewform?embedded=true" width="760" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 
 
 

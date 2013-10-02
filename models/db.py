@@ -31,6 +31,26 @@ UserAddress = db.define_table("user_address",
 	format="%(region)s")
 
 
+Arquivo = db.define_table("arquivo",
+    Field("file_arquivo", "upload"))
+
+Formulario = db.define_table("omarsat",
+    Field("nome"),
+	Field("instituicao"),
+	Field("rua"),
+	Field("bairro"),
+	Field("cidade"),
+	Field("estado"),
+	Field("cep"),
+	Field("telefone"),
+	Field("fax"),
+	Field("email", requires=IS_EMAIL()),
+	Field("apresentacao","boolean"),
+	Field("titulo_trab"),
+	Field("estudante","boolean"),
+	Field("resumo","upload"))
+
+
 
 class NOT_STARTS_WITH(object):
 	def __init__(self, error_message="nao permitido iniciar com %s", letter="a"):

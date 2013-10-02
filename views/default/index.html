@@ -1,6 +1,20 @@
     {{extend 'hm.html'}}
 <br>
 
+<!-- Google + -->
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-annotation="inline" data-width="300"></div>
+
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<!-- Google + -->
+
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span3 bs-docs-sidebar">
@@ -13,7 +27,9 @@
                     <li class><a href="#publications"> Publications </a></li>
                     <li class><a href="#experience"> Experience </a></li>
                     <li class><a href="#links"> Useful links </a></li>
+                    <li class><a href="{{=URL("formpython")}}" target="_blank"> Introduction to Python </a></li>
                 </ul>
+
         </div> <!-- span3 -->
 
         <div class="span9">
@@ -35,9 +51,24 @@
                     <li> LinkedIn profile: <a href="http://br.linkedin.com/pub/rafael-soutelino/2a/b9b/26a" target="_blank">LinkedIn</a>
                     <li> GitHub repository: <a href="https://github.com/rsoutelino/romslab" target="_blank">GitHub</a>
                 </ul>
-                <br><br>
+                <br>
+<!--                <h3> <strong style="color:red">NEW ! </strong> Ocean Modeling IRC channel </h3>
+                    <p>
+                        You are welcome and encouraged to join us in this open discussion of ocean modeling (and related topics) based on a IRC chat channel. Let's share our experiences
+                        and answer/reply questions related to oceanographic model implementations and bugs/pitfalls in a modeler typical work routine. The idea is to create
+                        a real time chat channel, with a healthy, objective and prompt question/answer atmosphere. The more people join, the more efficient will be the
+                        initiative. I hope this is helpful and shortens the distance among us in day-by-day discussions.
+                        <ul>
+                            <li> <strong> Suggested clients: </strong> xchat (linux), colloquy (macOS), mirc (windows)
+                            <li> <strong> Server: </strong> <code>irc.freenode.net</code>
+                            <li> <strong> Joining channels: </strong> <code>/join #ocean_modeling</code> and <code>/join #oceanography</code>
+                            <li> <strong> Create your nickname: </strong> <code>/nick yournick</code>
+                            <li> <strong> Register your nickname: </strong> <code>/ns register yourpassword your-email@yourserver.com</code> and check your e-mail, following the instructions
+                        </ul>
+                    </p>
+-->
             </section> <!-- aboutme -->
-
+<br><br>
             <section id="education">
                 <div class="page-header">
                     <h1> Education </h1>
@@ -93,12 +124,23 @@
                     <h1>Publications</h1>
                 </div>
 
-                <h3> Peer-reviewd articles </h3>
+                <h3> Peer-reviewed articles </h3>
                 <ul>
+                    Soutelino, R.G., Miranda, J.M.
+                    <strong>Um estudo semi-idealizado para avaliar o papel da topografia no processo de
+                            ressurgência costeira em Cabo Frio, RJ.</strong>
+                    <i>Bol. Obs. A. R. Lamego.</i>, doi:http://dx.doi.org/10.5935/2177-4560.20130008.
+                    <a href="http://www.essentiaeditora.iff.edu.br/index.php/boletim/article/view/2177-4560.20130008/2814" target="_blank">PDF</a>
+                <br><br>
+                    Arruda, W.Z., Campos, E.J.D., Zharkov, V., Soutelino, R.G., I.C.A. da Silveira
+                    <strong>Events of equatorward translation of the Vitoria Eddy.</strong>
+                    <i>Cont. Shelf Res.</i>, doi:10.1016/j.csr.2013.05.004, 2013.
+                    <a href="http://www.sciencedirect.com/science/article/pii/S0278434313001519" target="_blank">PDF</a>
+                <br><br>
                     Soutelino, R.G., I.C.A. da Silveira, A. Gangopadhyay, J.A. Miranda.
                     <strong>Is the Brazil Current eddy-dominated to the north of 20S?</strong>
                     <i>Geophys. Res. Lett.</i>, doi:10.1029/2010GL046276, 2011.
-                    <a href="http://europa.agu.org/?view=article&uri=/journals/gl/gl1103/2010GL046276/2010GL046276.xml&t=10.1029/2010GL046276" target="_blank">PDF</a>
+                    <a href="http://onlinelibrary.wiley.com/doi/10.1029/2010GL046276/abstract" target="_blank">PDF</a>
                 <br><br>
                     Mahiques, M.M.; Sousa, S.H.M.; Burone, L.; Nagai, R.H.; Silveira, I.C.A.; Figueira, R.C.L.; Soutelino, R.G.; Ponsoni, L.; Klein, D.A..
                     <strong>Radiocarbon geochronology of the sediments of the Sao Paulo Bight (southern Brazilian upper margin).</strong>
@@ -169,7 +211,7 @@
                 <h3>Oceanographic Packages and Models</h3>
 
                 <ul>
-                    <li> Regional Ocean Modelong System -  <a href="http://www.myroms.org" target="_blank">ROMS</a>
+                    <li> Regional Ocean Modeling System -  <a href="http://www.myroms.org" target="_blank">ROMS</a>
                     <li> Princeton Ocean Model - <a href="http://www.aos.princeton.edu/WWWPUBLIC/htdocs.pom/" target="_blank">POM</a>
                     <li> Common Ocean Data Access System - <a href="http://currents.soest.hawaii.edu/docs/adcp_doc/index.html" target="_blank">CODAS</a>
                 </ul>
@@ -189,7 +231,7 @@
                 <h3>Awards</h3>
 
                 <p> <strong>Prêmio Almirante Franco</strong>: Best graduate student oral presentation at
-                    http://tempo.cptec.inpe.br/
+                    OMARSAT
                     Physical Oceanography Simposium, organized by the Brazilian Navy at the
                     <a href="http://www.ieapm.mar.mil.br/" target="_blank">IEAPM</a>, Arraial do Cabo, RJ, Brazil, 2009.
                 </p>
@@ -203,11 +245,13 @@
 
                 <h3> Operational Oceanography/Meteorology </h3>
                 <ul>
+                    <li> Ocean data hub: <a href="http://ocn.mx/s/LuIBPuQ" target="_blank">Marinexplore</a>
                     <li> Weather forecast - Brazil: <a href="http://tempo.cptec.inpe.br/" target="_blank">CPTEC - Weather</a>
                     <li> Latest color and SST images for SE Brazil: <a href="http://satelite.cptec.inpe.br/oceano/" target="_blank">INPE - DSA</a>
                     <li> Weather station at Arraial do Cabo - RJ: <a href="http://www.inmet.gov.br/sonabra/dspDadosCodigo.php?QTYwNg==" target="_blank">INMET</a>
                     <li> Ocean and weather forecast for Arraial do Cabo - RJ: <a href="http://www.windguru.cz/int/index.php?sc=427" target="_blank">WindGURU</a>
-                    <li> Tide prediction - Brazil: <a href="http://www.dhn.mar.mil.br" target="_blank">DNH</a>
+                    <li> Live data mooring at Arraial do Cabo - RJ: <a href="http://metocean.fugrogeos.com/marinha/" target="_blank">SIODOC Project - IEAPM</a> <code> in construction... </code>
+
                 </ul>
 
                 <br>
@@ -251,6 +295,7 @@
                     <li> Scientific Python: <a href="http://www.scipy.org/" target="_blank">scipy.org</a>
                     <li> Plotting with Python: <a href="http://matplotlib.org/" target="_blank">matplotlib.org</a>
                     <li> Enthought Python Distribution: <a href="http://www.enthought.com/products/epd.php" target="_blank">enthought</a>
+                    <li> Nice blog about data analysis : <a href="http://ocefpaf.github.io/" target="_blank">Python4oceanographers</a>
                 </ul>
 
                 <br>
@@ -259,7 +304,7 @@
                 <ul>
                     <li> Surf conditions and forecast - Brazil: <a href="http://waves.terra.com.br/surf/ondas/condicao/brasil/" target="_blank">Waves</a>
                     <li> Surf conditions and forecast - Rio de Janeiro: <a href="http://www.ricosurf.com.br" target="_blank">RicoSurf</a>
-                    <li> Surf inform for Arraial do Cabo, Cabo Frio and Buzios - RJ: <a href="http://www.babublogsurf.com.br/p/previsao.html" target="_blank">Babu</a>
+                    <li> Surf report for Arraial do Cabo, Cabo Frio and Buzios - RJ: <a href="http://www.babublogsurf.com.br/p/previsao.html" target="_blank">Babu</a>
                 </ul>
 
                 <br><br>
@@ -271,6 +316,21 @@
     </div> <!-- row-fluid -->
 </div> <!-- container-fluid -->
 
+<!-- Google Analytics -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38329085-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- Google Analytics -->
 
 
 

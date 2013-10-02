@@ -14,4 +14,19 @@ def user():
 
 
 def formpython():
+    tmp = db(Arquivo).select()
     return locals()
+
+def download():
+    return response.download(request, db, attachment=False)
+
+def arquivos():
+    pass
+
+def inscricao():
+    form = SQLFORM.grid(db.omarsat).process()
+    return dict(form=form)
+
+def omarsat():
+    form = SQLFORM(Formulario).process()
+    return dict(form=form)

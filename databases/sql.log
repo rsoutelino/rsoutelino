@@ -114,3 +114,91 @@ timestamp: 2012-12-13T10:26:30.362478
 ALTER TABLE contacts ADD commentary TEXT;
 timestamp: 2013-02-05T15:53:47.898538
 ALTER TABLE coment ADD name CHAR(512);
+timestamp: 2013-03-28T15:01:05.660265
+CREATE TABLE arquivo(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file_arquivo CHAR(512)
+);
+success!
+timestamp: 2013-06-17T14:21:44.406795
+CREATE TABLE omarsat(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome CHAR(512),
+    instituicao CHAR(512),
+    rua CHAR(512),
+    bairro CHAR(512),
+    cidade CHAR(512),
+    estado CHAR(512),
+    cep CHAR(512),
+    telefone CHAR(512),
+    fax CHAR(512),
+    email CHAR(512),
+    apresentacao CHAR(1),
+    titulo_trab CHAR(512),
+    estudante CHAR(1),
+    resumo CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
