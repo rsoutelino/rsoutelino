@@ -17,6 +17,9 @@ def formpython():
     tmp = db(Arquivo).select()
     return locals()
 
+def students():
+    return dict()
+
 def download():
     return response.download(request, db, attachment=False)
 
