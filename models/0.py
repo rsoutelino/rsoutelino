@@ -1,4 +1,5 @@
 from gluon.storage import Storage
+import sys
 
 config = Storage(db=Storage(),
 	auth=Storage(settings=Storage(extra_fields=Storage()),
@@ -34,3 +35,7 @@ response.meta.keywords = "web2py, python framework"
 response.meta.generator = "web2py web framework"
 response.meta.copyright = "Copyright 2012"
 response.generic_patterns = ['*']
+
+
+# from siodoc_plot import plot
+# plot()
