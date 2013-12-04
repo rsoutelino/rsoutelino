@@ -14,6 +14,8 @@ import numpy as np
 from intdir2uv import intdir2uv
 # from matplotlib.font_manager import FontProperties
 
+localpath = "/home/rsoutelino/admin/website/web2py/applications/rsoutelino/"
+
 ################################################################################################
 
 def smooth(x, window_len=200, window='hanning'):
@@ -64,10 +66,11 @@ def download_data():
     filename = "Data_month.csv"
     new_filename = filename + "_corrected"
     os.system("grep -v Brazil %s > %s" %(filename, new_filename) )
-    os.system( "mv %s ../static/tmp_files/%s" %(new_filename, new_filename) )
+    os.system( "mv %s %sstatic/tmp_files/%s" %(new_filename, localpath, new_filename) )
+    os.system( "rm %s " %filename )
 
 
-def plot(filename='../static/tmp_files/Data_month.csv_corrected'):
+def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
     columns = defaultdict(list) 
     with open(filename,'rU') as f:
         reader = csv.DictReader(f) 
@@ -277,7 +280,7 @@ def plot(filename='../static/tmp_files/Data_month.csv_corrected'):
     ax.set_frame_on(False)
 
 
-    plt.savefig('../static/images/siodoc_tmp.png', dpi=96)
+    plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
     plt.close('all')
     #plt.show()
 
