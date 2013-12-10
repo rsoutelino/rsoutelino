@@ -1,14 +1,16 @@
 #!/usr/local/epd-7.2-1-rh5-x86_64/bin/python
 # -*- coding:utf-8 -*-
 # Modulo para previsao de mare, parte integrante do CONTROLE
-
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
 import re
 import numpy as np
 from scipy.interpolate import interp1d
 import datetime as dt
 import matplotlib.dates as mpldates
 from matplotlib.patches import Polygon
-import matplotlib.pyplot as plt
+
 ################################################################################
  
 

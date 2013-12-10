@@ -1,9 +1,11 @@
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
 import os
 import urllib2
 import numpy as np
 import csv
 import datetime as dt
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from intdir2uv import intdir2uv
 from matplotlib.font_manager import FontProperties
