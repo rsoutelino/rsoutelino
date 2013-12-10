@@ -12,12 +12,14 @@ def user():
 		objects.form = auth()
 	return dict(objects=objects)
 
-
 def formpython():
     tmp = db(Arquivo).select()
     return locals()
 
 def students():
+    return dict()
+
+def datapanel():
     return dict()
 
 def download():

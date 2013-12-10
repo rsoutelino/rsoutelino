@@ -1,0 +1,61 @@
+ESTAÇÃO	   NOME	                                         LATGRAU  LATMIN	  HEMLAT  LONGRAU  LONMIN   HEMLON     NCOMP         NM          FUSO        CARTA	
+10520      PORTO DE BELÉM                                    1     26.20        S       48     29.60     W          100        181.00        3.00         320   
+10525      ILHA DO MOSQUEIRO                                 1     9.90         S       48     28.50     W          26         183.00        3.00         316   
+10566      PORTO DE VILA DO CONDE                            1     32.40        S       48     45.20     W          42         168.00        3.00         304   
+10572      TRAPICHE DE BREVES                                1     41.60        S       50     29.10     W          90         67.00         3.00         4341  
+10620      PORTO DE SANTANA - ICOMI                          0     3.40         N       51     10.90     W          32         177.00        3.00         206   
+10650      PONTA DO CÉU                                      0     45.60        N       50     6.80      W          70         221.00        3.00         201   
+20520      FUNDEADOURO DE SALINÓPOLIS                        0     37.00        N       47     21.00     W          60         275.00        3.00         311   
+20533      ILHA DOS GUARÁS                                   0     34.60        N       47     54.50     W          20         234.00        3.00         313   
+30110      PORTO DE ITAQUI                                   2     34.60        S       44     22.20     W          35         343.00        3.00         413   
+30114      TERMINAL ALUMAR                                   2     40.70        S       44     21.80     W          35         341.00        3.00         414   
+30120      SÃO LUÍS                                          2     31.60        S       44     18.70     W          36         328.00        3.00         412   
+30140      PORTO DE TUTÓIA                                   2     45.90        S       42     16.50     W          33         166.00        3.00         504   
+30149      TERMINAL DA PONTA DA MADEIRA                      2     33.90        S       44     22.70     W          65         323.00        3.00         413   
+30225      LUÍS CORREIA                                      2     51.10        S       41     38.70     W          51         171.00        3.00         515   
+30337      TERMINAL PORTUÁRIO DO PECÉM                       3     32.10        S       38     47.90     W          12         148.00        3.00         705   
+30340      PORTO DE MUCURIPE                                 3     42.90        S       38     28.60     W          17         158.00        3.00         701   
+30407      AREIA BRANCA (TERMISA)                            4     49.50        S       37     2.40      W          36         187.00        3.00         703   
+30443      GUAMARÉ                                           5     6.30         S       36     19.10     W          18         141.00        3.00         704   
+30445      PORTO DE MACAU                                    5     6.00         S       36     40.40     W          26         139.00        3.00         702   
+30461      TRAPICHE DA CPRN                                  5     46.70        S       35     12.50     W          32         128.00        3.00         802   
+30540      PORTO DE CABEDELO                                 6     58.30        S       34     50.40     W          45         134.00        3.00         830   
+30645      PORTO DO RECIFE                                   8     3.40         S       34     52.10     W          16         124.00        3.00         902   
+30685      PORTO DE SUAPE                                    8     23.90        S       34     57.60     W          13         124.00        3.00         906   
+30725      PORTO DE MACEIÓ                                   9     41.00        S       35     43.50     W          21         121.00        3.00         901   
+30810      TERMINAL MARÍTIMO INÁCIO BARBOSA                  10    50.00        S       36     55.70     W          17         124.00        3.00         1001  
+30825      CAPITANIA DOS PORTOS DE SERGIPE                   10    55.20        S       37     2.80      W          14         116.00        3.00         1003  
+30955      FERNANDO DE NORONHA-BAÍA DE SANTO ANTÔNIO         3     50.00        S       32     24.20     W          30         134.00        2.00         52    
+40118      PORTO DE MADRE DE DEUS                            12    44.70        S       38     37.30     W          36         151.00        3.00         1105  
+40135      BASE NAVAL DE ARATU                               12    47.80        S       38     29.50     W          21         145.00        3.00         1103  
+40140      PORTO DE SALVADOR                                 12    57.90        S       38     31.00     W          32         132.00        3.00         1102  
+40145      PORTO DE ILHÉUS                                   14    46.80        S       39     1.60      W          40         112.00        3.00         1201  
+40240      TERMINAL DE BARRA DO RIACHO                       19    50.30        S       40     3.60      W          13         78.00         3.00         1420  
+40250      PORTO DE VITÓRIA                                  20    19.20        S       40     19.10     W          32         80.00         3.00         1401  
+40255      PORTO DE TUBARÃO                                  20    17.30        S       40     14.60     W          13         80.00         3.00         1401  
+40263      ILHA DA TRINDADE                                  20    30.50        S       29     18.60     W          22         67.00         2.00         21    
+40280      TERMINAL DA PONTA DO UBU                          20    47.20        S       40     34.20     W          18         82.00         3.00         1404  
+50116      TERMINAL DE IMBETIBA                              22    23.10        S       41     46.20     W          27         72.00         3.00         1507  
+50140      ILHA FISCAL                                       22    53.80        S       43     10.00     W          26         69.00         3.00         1515  
+50145      PORTO DE ITAGUAÍ                                  22    55.90        S       43     50.50     W          21         81.00         3.00         1623  
+50156      PORTO DO FORNO                                    22    58.30        S       42     0.80      W          51         68.00         3.00         1503  
+50165      TERMINAL DA ILHA GUAÍBA                           23    0.00         S       44     1.90      W          40         71.00         3.00         1621  
+50170      PORTO DE ANGRA DOS REIS                           23    0.80         S       44     18.90     W          22         69.00         3.00         1636  
+50210      PORTO DE SÃO SEBASTIÃO                            23    48.60        S       45     23.90     W          24         68.00         3.00         1644  
+50225      PORTO DE SANTOS - TORRE GRANDE                    23    57.10        S       46     18.30     W          45         79.00         3.00         1701  
+60130      BARRA DE PARANAGUÁ - CANAL SE                     25    32.40        S       48     17.70     W          29         78.00         3.00         1821  
+60132      B. PORTO DE PARANAGUÁ - CAIS                      25    30.10        S       48     31.50     W          54         98.00         3.00         1822  
+60135      BARRA DE PARANAGUÁ - CANAL DA GALHETA             25    34.30        S       48     19.10     W          44         79.00         3.00         1821  
+60139      TERMINAL PORTUÁRIO DA PONTA DO FÉLIX              25    27.30        S       48     40.70     W          31         111.00        3.00         1822  
+60220      DEL. DA CAP.EM SÃO FRANCISCO                      26    14.70        S       48     38.40     W          45         84.00         3.00         1804  
+60230      PORTO DE ITAJAÍ                                   26    54.10        S       48     39.70     W          49         57.00         3.00         1801  
+60245      PORTO DE FLORIANÓPOLIS                            27    35.30        S       48     33.40     W          32         64.00         3.00         1905  
+60250      PORTO DE IMBITUBA                                 28    13.80        S       48     39.00     W          32         37.00         3.00         1908  
+60370      PORTO DO RIO GRANDE                               32    7.40         S       52     6.20      W          35         22.00         3.00         2101  
+70120      PORTO DE SAN JUAN                                 18    28.00        N       66     7.00      W          9          18.30         4.00         25670 
+70220      PORTO DE LA GUAIRA                                10    37.00        N       66     56.00     W          22         45.70         4.00         24452 
+70320      PORTO DE CARTAGENA                                10    21.60        N       75     32.90     W          10         12.00         5.00         24509 
+70420      PORTO DE PARAMARIBO                               5     49.60        N       55     8.70      W          30         150.00        3.50         24375 
+70520      PORTO DE CAYENA                                   4     55.00        N       52     20.00     W          8          195.80        3.00         24355 
+70620      PORTO DE MONTEVIDÉU                               34    55.00        S       56     13.00     W          33         64.00         3.00         41    
+70720      PORTO DE BUENOS AIRES                             34    36.00        S       58     22.00     W          35         79.00         3.00         156
