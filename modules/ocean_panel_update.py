@@ -3,7 +3,7 @@ from tide_pilot import *
 import ephem
 
 
-web2pyPath = '/home/rsoutelino/admin/website/web2py/applications/rsoutelino/'
+web2pyPath = '/home/rsoutelino/web2py/applications/rsoutelino/'
 
 # SIODOC
 download_data()

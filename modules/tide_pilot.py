@@ -14,7 +14,7 @@ from matplotlib.patches import Polygon
 ################################################################################
  
 
-web2pyPath = '/home/rsoutelino/admin/website/web2py/applications/rsoutelino/'
+web2pyPath = '/home/rsoutelino/web2py/applications/rsoutelino/'
 
 class ReadTideDataBase(object):
     """Parent class to read all database text files """

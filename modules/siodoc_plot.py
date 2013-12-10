@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 from collections import defaultdict
 
 
-localpath = "/home/rsoutelino/admin/website/web2py/applications/rsoutelino/"
+localpath = "/home/rsoutelino/web2py/applications/rsoutelino/"
 
 ################################################################################################
 
