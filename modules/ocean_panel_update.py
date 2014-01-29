@@ -5,9 +5,7 @@ import ephem
 
 web2pyPath = '/home/rsoutelino/web2py/applications/rsoutelino/'
 
-# SIODOC
-download_data()
-plot()
+
 
 
 # PACMARE
@@ -27,3 +25,9 @@ sun = ephem.Sun(obs)
 rise_set_times = [sun.rise_time.datetime(), sun.set_time.datetime()]
 
 plotMare(time2, h2, station, date, rise_set_times, True, web2pyPath)
+
+
+
+# SIODOC
+download_data()
+plot(dst=True)

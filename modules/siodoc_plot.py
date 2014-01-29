@@ -12,7 +12,8 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from collections import defaultdict
-
+from matplotlib.dates import date2num
+import ephem
 
 localpath = "/home/rsoutelino/web2py/applications/rsoutelino/"
 
@@ -156,7 +157,11 @@ def fill_polygons(array):
 ###############################################################################################  
 
 
-def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
+def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
+
+    # dst=True
+    # filename = localpath + 'static/tmp_files/Data_month.csv_corrected'
+
     columns = defaultdict(list) 
     with open(filename,'rU') as f:
         reader = csv.DictReader(f) 
@@ -165,8 +170,8 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
                 columns[k].append(v) 
 
     varlist = ["gust", "wspd", "wdir", "cspd", "cdir", "sst"]
-    
-    
+
+
     date_window = 7
     tlim = -24 * date_window   # put date_window as function argument
 
@@ -176,12 +181,12 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
     cspd = np.array(map(float, columns.values()[32][tlim:]))/100
     cdir = np.array(map(float, columns.values()[6][tlim:]))
     sst  = np.array(map(float, columns.values()[9][tlim:]))
-    
+
     time = columns.values()[44][tlim:]
     year = dt.datetime.now().year
     days, months, hours, minutes = [], [], [], []
     datetime = []
-    
+
     for d in range(len(time)):
         days.append(int(time[d].split()[0].replace('.','')[0:2]))
         months.append(int(time[d].split()[0].replace('.','')[2:4]))    
@@ -189,7 +194,40 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
         minutes.append(int(time[d].split()[1].replace(':','')[2:4]))
         datetime.append(dt.datetime(year, months[d], days[d], hours[d], minutes[d]))
 
+    years = list(np.array(days)*0 + year); del year
+    dates, datesnum = [], []
+
+    for year, month, day, hour, minute in zip(years, months, days, hours, minutes):
+        d = dt.datetime(year, month, day, hour)
+        dates.append( d )
+        datesnum.append( date2num(d) )
+
     datetime = np.array(datetime)
+    datesnum = np.array(datesnum)
+
+
+    # getting rise and set times
+    daysarr = np.array(days)
+    obs = ephem.Observer()
+    obs.lon = '-42'
+    obs.lat = '-23'
+    obs.elevation = 0
+
+    rise_and_set = []
+
+    for i in np.arange(0, datesnum.size, 24):
+        day = dt.date(years[i], months[i], days[i])
+        obs.date = ephem.Date(day)
+        sun = ephem.Sun(obs)
+        rise = sun.rise_time.datetime() - dt.timedelta(hours=3)
+        sett = sun.set_time.datetime() - dt.timedelta(hours=3)
+        if dst:
+            rise = rise + dt.timedelta(hours=1)
+            sett = sett + dt.timedelta(hours=1)
+        rise, sett = date2num(rise), date2num(sett)
+        rise_and_set.append([rise, sett])
+
+
 
     window_len = 12
     decmag = -22.3
@@ -203,7 +241,7 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
             exec('%s = smooth(%s, 5)' %(var, var) )
 
 
-#### PLOT WIND & GUST  
+    #### PLOT WIND & GUST  
 
     fig = plt.figure(facecolor='w', figsize=(17,10))
     plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
@@ -212,22 +250,41 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
     ax = fig.add_subplot(311)
     plt.title(u'Wind & Gust (m/s)', fontsize='smaller')
 
-    gx = np.linspace(min(gust), max(gust), len(gust))
-    gy = np.linspace(min(gust), max(gust), round(max(gust) + 2 ))
-    gx, gy = np.meshgrid(gx, gy)
-    xlimit = np.linspace(0, len(gust), len(gust) )
-    ylimit = gx[0,-1]
-    up = np.linspace(ylimit, ylimit, len(gust))
+    ymin = 0
+    ymax = 15
+    gy = np.linspace(ymin, ymax, 100)
+    gx, gy = np.meshgrid(datesnum, gy)
+    xlimit = np.linspace(0, gust.size, gust.size )
+    up = np.linspace(ymax+10, ymax+10, gust.size )
 
-    ax.contourf(gy, 100, alpha=1, cmap=plt.cm.hot_r)
-    ax.plot(xlimit, gust, 'w-')
+    # night fill
+    for d in range(len(rise_and_set)):
+        if d == 0: # begin boundary
+            left = datesnum[0]
+            right = rise_and_set[d][0]
+            # print "BEGIN"
+        elif d == (len(rise_and_set)-1): # end boundary
+            left = rise_and_set[d][1]
+            right = datesnum[-1]
+            # print "END"
+        else: # middle
+            left = rise_and_set[d-1][1]
+            right = rise_and_set[d][0]
+            # print "MIDDLE"
 
+        # ax.plot([left, right], [12, 12], 'k*')
+        ax.fill([left, right, right, left], [ymin, ymin, ymax, ymax], 
+                 color='0.4', alpha='0.2')
+
+    ax.contourf(gx, gy, gy, 100, alpha=1, cmap=plt.cm.hot_r)
+    ax.plot(datesnum, gust, 'w-')
+
+    # ax.set_axis_off()
+    ax.fill_between(datesnum, up, gust, color='w')
+
+    ax.plot(datesnum, wspd, 'k-', linewidth=2)
     ax.set_axis_off()
-    ax.fill_between(xlimit, up, gust, color='w')
-
-    ax.plot(xlimit, wspd, 'k-', linewidth=2)
-    ax.set_axis_off()
-    ax.fill_between(xlimit, up, wspd, color='w', alpha=0.6)
+    ax.fill_between(datesnum, up, wspd, color='w', alpha=0.6)
 
     wu, wv   = intdir2uv(wspd, wdir, decmag, 0)
     wu2, wv2 = intdir2uv(wspd * 0 + 5, wdir, decmag, 0)
@@ -235,122 +292,126 @@ def plot(filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
 
     gust_label, wind_label = map(int,gust), map(int,wspd)
 
-    for r, gust_txt in enumerate(gust_label[::5]):
-        ax.annotate(gust_txt, (xlimit[::5][r] - 0.4, gust[::5][r] + 0.5), 
-                            fontsize=10, fontstyle='italic', alpha=0.5, ha='center')
+    d = 5
 
-    for i, wind_txt in enumerate(wind_label[::5]):
-        ax.annotate(wind_txt, (xlimit[::5][i] - 0.6, wspd[::5][i] - 1.2), 
-                            fontsize=10, fontstyle='italic', ha='center')
+    for r, gl in enumerate(gust_label[::d]):
+        ax.annotate(gl, (datesnum[::d][r], gust[::d][r] + 0.5), 
+                         fontsize=10, fontstyle='italic', alpha=0.5, ha='center')
 
-    ax.quiver(xlimit[::5], wspd[::5] - 2.2, wu2[::5], wv2[::5],width=0.0015, scale=400)
+    for i, wl in enumerate(wind_label[::d]):
+        ax.annotate(wl, (datesnum[::d][i], wspd[::d][i] - 1.2), 
+                         fontsize=10, fontstyle='italic', ha='center')
 
-    plt.axis([xlimit.min(), xlimit.max(), 0, gust.max()])
+    offset = datesnum.mean()*0.00000004
+    ax.quiver(datesnum[::5]+offset, wspd[::5] - 1.6, wu2[::5], wv2[::5],
+              width=0.0015, scale=400)
 
 
 
-####### PLOT CORRENTE
+
+    plt.axis([datesnum.min(), datesnum.max(), 0, ymax])
+
+    # plt.show()
+    # stop
+
+    ####### PLOT CORRENTE
 
     ax = fig.add_subplot(312)
     plt.title(u'Along-shelf surface flow (cm/s)', fontsize='smaller')
-    
+
     cu, cv   = intdir2uv(cspd, cdir, decmag, 0)
 
-    cx = np.linspace(min(cu), max(cu), len(cu))     
-    cy = np.linspace(round(min(cu))-0.1, round(max(cu))+0.1, 2)
-    x = np.linspace(0, len(cu), len(cu))
-    zr =  np.linspace(0, 0, len(cu))
-    curr_cf = np.meshgrid(cx, cy)
-    
-    down = np.linspace(min(cu)-0.5, min(cu)-0.5, len(cu))
-    up  = np.linspace(max(cu)+1, max(cu)+1, len(cu))
+    ymax = 0.5  
+    cy = np.linspace(ymax*-1, ymax, 100)
+    x = np.linspace(0, cu.size, cu.size)
+    zr =  np.linspace(0, 0, cu.size)
+    cx, cy = np.meshgrid(datesnum, cy)
 
-    if np.all([cu > 0]):
-        plt.contourf(x, cy, curr_cf[1],100,alpha=0.5, cmap=plt.cm.Greens)
-    elif np.all([cu < 0]):
-        plt.contourf(x, cy, curr_cf[1],100,alpha=0.5, cmap=plt.cm.Purples_r)
-    else:
-        plt.contourf(x, cy, curr_cf[1],100,alpha=0.5, cmap=plt.cm.PRGn)       
-    
-    plt.plot_date(x, cu, 'k-', linewidth=2)
-    
+    down = np.linspace(ymax*-1 -1, ymax*-1 -1, cu.size)
+    up  = np.linspace(ymax+1, ymax+1, cu.size)
+
+
+
+    plt.contourf(cx, cy, cy, 100, cmap=plt.cm.PRGn)       
+
+    plt.plot(datesnum, cu, 'k-', linewidth=2)
+
     uplim, downlim = fill_polygons(cu)
-    plt.fill_between(x, down, uplim,color='w')
-    plt.fill_between(x, up, downlim,color='w')
+    plt.fill_between(datesnum, down, uplim, color='w')
+    plt.fill_between(datesnum, up, downlim, color='w')
+
     ax.set_axis_off()
 
+    yoffset = ymax*0.1
     curr_label = []
     uan = np.abs(cu*100)
-    
+
     for l in range(len(cu)):
       curr_label.append("%2d" %uan[l])
 
-    for r, txt_curr in enumerate(curr_label[::10]):
-        ax.annotate(txt_curr, (x[::10][r], cu[::10][r] + 0.15), 
+    d = 5
+
+    for r, cl in enumerate(curr_label[::d]):
+        ax.annotate(cl, (datesnum[::d][r], cu[::d][r]+yoffset), 
                   fontsize=10, fontstyle='italic', ha='center')
 
     ux = cu*0
     ux[np.where(ux > 0)] = 1
     ux[np.where(ux < 0)] = -1
     cu2, cv2 = intdir2uv(cspd*0 + 0.5, cdir, decmag, 0)
-    
-    plt.quiver(x[::5], cu[::5]-0.2, cu2[::5], cv2[::5], width=0.0015, scale=40)    
 
+    plt.quiver(datesnum[::d]+offset, cu[::d]-yoffset, cu2[::d], cv2[::d], 
+               width=0.0015, scale=40)   
 
-######## PLOT TEMP
+    plt.axis([datesnum.min(), datesnum.max(), ymax*-1, ymax])
+
+    ######## PLOT TEMP
 
     ax = fig.add_subplot(313)
     plt.title(u'Sea surface temperature ($^\circ$C)', fontsize='smaller')
 
-    tempx = np.linspace(min(sst), max(sst), len(sst))   
-    tempy = np.linspace(round(min(sst))-0.5, round(max(sst)) + 0.5, 24) #round(min(sst))
-    x = np.linspace(0, len(sst), len(sst))
-    temp_cf = np.meshgrid(tempx, tempy)
+    ymin = 12
+    ymax = 28   
+    tempy = np.linspace(ymin, ymax, 100)
+    tempx, tempy = np.meshgrid(datesnum, tempy)
 
-    uplim = np.linspace(round(max(sst)) + 1, round(max(sst)) + 1, len(sst))
+    uplim = np.linspace(ymax+2, ymax+2, sst.size)
 
-    if np.all([ sst > 20]):
-        plt.contourf(x, tempy, temp_cf[1], 60, alpha=0.8, cmap=plt.cm.Reds)
-    elif np.all([sst <= 20]):
-        plt.contourf(x, tempy, temp_cf[1], 60, alpha=0.8, cmap=plt.cm.Blues_r)
-    else:    
-        plt.contourf(x, tempy, temp_cf[1], 60, alpha=0.8, cmap=plt.cm.RdBu_r)
-    
-    plt.plot(x, sst,'k-', linewidth=2)
-    plt.fill_between(x, uplim, sst, color= 'w')
+
+    ax.contourf(tempx, tempy, tempy, 60, cmap=plt.cm.RdBu_r)
+
+    plt.plot(datesnum, sst, 'k-', linewidth=2)
+    plt.fill_between(datesnum, uplim, sst, color= 'w')
+
+
+    d = 5
+
+    yoffset = ymax*0.03
 
     temp_label = map(int, sst)
-    for i, txt_temp in enumerate(temp_label[::10]):
-        ax.annotate(txt_temp, (x[::10][i]-0.4, sst[::10][i]+0.5), 
+    for i, tl in enumerate(temp_label[::d]):
+        ax.annotate(tl, (datesnum[::d][i], sst[::d][i]+yoffset), 
                   fontsize=10, fontstyle='italic', ha='center')
 
-    nbs = 60
-    plt.locator_params(axis='x', nbins=nbs)
+    ax.set_axis_off()
 
-    fig.canvas.draw()
-    # index = [item.get_text() for item in ax.get_xticklabels()]
-    # index = map(int, index)
-    # index[-1] = index[-1]-1
+    ax = fig.add_axes([0.125, 0.04, 0.775, 0.05])
+    ax.plot(datesnum, sst*0, 'w')
+    ax.set_axis_off()
 
-    # lab = [datetime[i] for i in index]
-    # label = [l.strftime('%d') for l in lab]
-    # labels = map(int, np.ones((61)))
+    for d in np.arange(0, datesnum.size, 24):
+        label = dates[d].strftime('%d/%b')
+        ax.annotate(label, (datesnum[d], -0.8), 
+                    fontweight='bold', ha='center')
 
-    # for c in np.arange(0,61,3):
-    #   labels[c] = label[c]
-    #   try: 
-    #     labels[c+1] = ''
-    #     labels[c+2] = ''
-    #   except:
-    #      'IndexError'
+    for d in np.arange(0, datesnum.size, 4):
+        label = dates[d].strftime('%Hh')
+        ax.annotate(label, (datesnum[d], 0.6), ha='center', fontsize=8)
 
-    # ax.set_yticklabels("")
-    # ax.set_xticklabels(labels, fontsize='smaller', fontweight='bold')
-    # ax.set_xlabel('\nNov/Dez 2013', fontsize='smaller', fontweight='semibold')
-    ax.set_frame_on(False)
+    plt.axis([datesnum[0], datesnum[-1], -1, 1])
 
 
     plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
     plt.close('all')
-    #plt.show()
+
 
