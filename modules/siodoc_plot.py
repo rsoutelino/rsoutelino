@@ -39,8 +39,10 @@ def download_data():
     filename = "Data_month.csv"
     new_filename = filename + "_corrected"
     os.system("grep -v Brazil %s > %s" %(filename, new_filename) )
-    os.system( "mv %s %sstatic/tmp_files/%s" %(new_filename, localpath, new_filename) )
-    os.system( "rm %s " %filename )
+    os.system( "cp %s %sstatic/tmp_files/%s" %(new_filename, localpath, new_filename) )
+    os.system( "cp %s %sstatic/tmp_files/%s_%s" %(new_filename, localpath, 
+                                       filename[:10], str(dt.datetime.today())[:10]) )
+    os.system( "rm Data_month*")
 
 def smooth(x, window_len=200, window='hanning'):
     if x.ndim != 1:
@@ -145,7 +147,7 @@ def fill_polygons(array):
 
 
 
-def get_rise_set(day):
+def get_rise_set(day, dst):
     obs = ephem.Observer()
     obs.date = ephem.Date(day)
     obs.lon = '-42'
@@ -161,7 +163,7 @@ def get_rise_set(day):
         
     
 
-def night_fill(ax, rise_and_set):
+def night_fill(ax, rise_and_set, datesnum, ymin, ymax):
     for d in range(len(rise_and_set)):
         if d == 0: # begin boundary
             left = datesnum[0]
@@ -184,214 +186,253 @@ def night_fill(ax, rise_and_set):
 ###############################################################################################  
 
 
-# def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
+def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
 
-dst=True
-filename = localpath + 'static/tmp_files/Data_month.csv_corrected'
-
-
-# READING DATA
-columns = defaultdict(list) 
-with open(filename,'rU') as f:
-    reader = csv.DictReader(f) 
-    for row in reader: 
-        for (k,v) in row.items(): 
-            columns[k].append(v) 
-
-varlist = ["gust", "wspd", "wdir", "cspd", "cdir", "sst"]
-
-date_window = 7
-tlim = -24 * date_window   # put date_window as function argument
-
-gust = np.array(map(float, columns.values()[7][tlim:])) 
-wspd = np.array(map(float, columns.values()[3][tlim:]))
-wdir = np.array(map(float, columns.values()[19][tlim:]))
-cspd = np.array(map(float, columns.values()[32][tlim:]))/100
-cdir = np.array(map(float, columns.values()[6][tlim:]))
-sst  = np.array(map(float, columns.values()[9][tlim:]))
-
-time = columns.values()[44][tlim:]
-year = dt.datetime.now().year
-days, months, hours, minutes = [], [], [], []
-datetime = []
-
-for d in range(len(time)):
-    days.append(int(time[d].split()[0].replace('.','')[0:2]))
-    months.append(int(time[d].split()[0].replace('.','')[2:4]))    
-    hours.append(int(time[d].split()[1].replace(':','')[0:2]))   
-    minutes.append(int(time[d].split()[1].replace(':','')[2:4]))
-    datetime.append(dt.datetime(year, months[d], days[d], hours[d], minutes[d]))
-
-years = list(np.array(days)*0 + year); del year
-dates, datesnum = [], []
-
-for year, month, day, hour, minute in zip(years, months, days, hours, minutes):
-    d = dt.datetime(year, month, day, hour)
-    dates.append( d )
-    datesnum.append( date2num(d) )
-
-datetime = np.array(datetime)
-datesnum = np.array(datesnum)
-
-# PRE-PROCESSING DATA
-window_len = 12
-decmag = -22.3
-
-for var in varlist:
-    if var != "sst":
-        exec('%s = remove_zeros(%s)' %(var, var))
-        exec('%s = smooth(%s, window_len)' %(var, var) )
-    else:
-        exec('%s = remove_zeros(%s)' %(var, var))
-        exec('%s = smooth(%s, 5)' %(var, var) )
+    # dst=True
+    # filename = localpath + 'static/tmp_files/Data_month.csv_corrected'
 
 
-# PLOTTING
+    # READING DATA
+    columns = defaultdict(list) 
+    with open(filename,'rU') as f:
+        reader = csv.DictReader(f) 
+        for row in reader: 
+            for (k,v) in row.items(): 
+                columns[k].append(v) 
 
-fig = plt.figure(facecolor='w', figsize=(17,10))
-plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
-                 \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
+    varlist = ["gust", "wspd", "wdir", "cspd", "cdir", "sst"]
 
-#### PLOT WIND & GUST  
-ax = fig.add_subplot(311)
-print ax.get_position().bounds
-plt.title(u'Wind & Gust (m/s)', fontsize='smaller')
-# preparing arrays for colorfill
-ymin = 0
-ymax = 15
-gy = np.linspace(ymin, ymax, 100)
-gx, gy = np.meshgrid(datesnum, gy)
-xlimit = np.linspace(0, gust.size, gust.size )
-up = np.linspace(ymax+10, ymax+10, gust.size )
+    date_window = 7
+    tlim = -24 * date_window   # put date_window as function argument
 
-ax.contourf(gx, gy, gy, 100, alpha=1, cmap=plt.cm.hot_r)
-ax.plot(datesnum, gust, 'w-')
-ax.fill_between(datesnum, up, gust, color='w')
-ax.plot(datesnum, wspd, 'k-', linewidth=2)
-ax.set_axis_off()
-ax.fill_between(datesnum, up, wspd, color='w', alpha=0.6)
-# preparing arrays
-wu, wv   = intdir2uv(wspd, wdir, decmag, 0)
-wu2, wv2 = intdir2uv(wspd * 0 + 5, wdir, decmag, 0)
-wu2, wv2 = wu2 * -1, wv2 * -1
-gust_label, wind_label = map(int,gust), map(int,wspd)
-d = 5
-for r, gl in enumerate(gust_label[::d]):
-    ax.annotate(gl, (datesnum[::d][r], gust[::d][r] + 0.5), 
-                     fontsize=10, fontstyle='italic', alpha=0.5, ha='center')
-for i, wl in enumerate(wind_label[::d]):
-    ax.annotate(wl, (datesnum[::d][i], wspd[::d][i] - 1.2), 
-                     fontsize=10, fontstyle='italic', ha='center')
-ax.quiver(datesnum[::5], wspd[::5] - 1.8, wu2[::5], wv2[::5],
-          width=0.0015, scale=400, pivot='middle')
-plt.axis([datesnum.min(), datesnum.max(), 0, ymax])
+    gust = np.array(map(float, columns.values()[7][tlim:])) 
+    wspd = np.array(map(float, columns.values()[3][tlim:]))
+    wdir = np.array(map(float, columns.values()[19][tlim:]))
+    cspd = np.array(map(float, columns.values()[32][tlim:]))/100
+    cdir = np.array(map(float, columns.values()[6][tlim:]))
+    sst  = np.array(map(float, columns.values()[9][tlim:]))
 
-####### PLOT SURFACE CURRENT
-ax = fig.add_subplot(312)
-print ax.get_position().bounds
-plt.title(u'Along-shelf surface flow (cm/s)', fontsize='smaller')
-# preparing arrays for colorfill
-cu, cv   = intdir2uv(cspd, cdir, decmag, 0)
-ymax = 0.5  
-cy = np.linspace(ymax*-1, ymax, 100)
-x = np.linspace(0, cu.size, cu.size)
-zr =  np.linspace(0, 0, cu.size)
-cx, cy = np.meshgrid(datesnum, cy)
-down = np.linspace(ymax*-1 -1, ymax*-1 -1, cu.size)
-up  = np.linspace(ymax+1, ymax+1, cu.size)
+    depths = [0, 10, 15, 20, 25, 45]
 
-plt.contourf(cx, cy, cy, 100, cmap=plt.cm.PRGn)       
-plt.plot(datesnum, cu, 'k-', linewidth=2)
-uplim, downlim = fill_polygons(cu)
-plt.fill_between(datesnum, down, uplim, color='w')
-plt.fill_between(datesnum, up, downlim, color='w')
-ax.set_axis_off()
+    f = open(filename)
+    lines = f.readlines()
+    SST = np.zeros((len(depths), sst.size-1))
+    c = 0
+    for t in range(tlim, -1):
+        SST[0,c] = float(lines[t].split(",")[-11])
+        SST[1,c] = float(lines[t].split(",")[-10])
+        SST[2,c] = float(lines[t].split(",")[-9])
+        SST[3,c] = float(lines[t].split(",")[-8])
+        SST[4,c] = float(lines[t].split(",")[-7])
+        SST[5,c] = float(lines[t].split(",")[-5])
+        c += 1 
 
-yoffset = ymax*0.1
-curr_label = []
-uan = np.abs(cu*100)
+    for k in range(len(depths)):
+        SST[k,:] = smooth(SST[k,:], 5)
 
-for l in range(len(cu)):
-  curr_label.append("%2d" %uan[l])
+    SST = remove_zeros(SST)
 
-d = 5
-for r, cl in enumerate(curr_label[::d]):
-    if cu[::d][r] >= 0:
-        off = yoffset
-    else:
-        off = yoffset*-2
-    ax.annotate(cl, (datesnum[::d][r], cu[::d][r]+off), 
-              fontsize=10, fontstyle='italic', ha='center')
-# preparing arrays
-ux = cu*0
-ux[np.where(ux > 0)] = 1
-ux[np.where(ux < 0)] = -1
-cu2, cv2 = intdir2uv(cspd*0 + 0.5, cdir, decmag, 0)
+    time = columns.values()[44][tlim:]
+    year = dt.datetime.now().year
+    days, months, hours, minutes = [], [], [], []
+    datetime = []
 
-for r in np.arange(0, cu.size, d):
-    if cu[r] <= 0:
-        off = yoffset*2
-    else:
-        off = yoffset*-2
-    plt.quiver(datesnum[r], cu[r]+off, cu2[r], cv2[r], 
-           width=0.0015, scale=40, pivot='middle')   
-plt.axis([datesnum.min(), datesnum.max(), ymax*-1, ymax])
+    for d in range(len(time)):
+        days.append(int(time[d].split()[0].replace('.','')[0:2]))
+        months.append(int(time[d].split()[0].replace('.','')[2:4]))    
+        hours.append(int(time[d].split()[1].replace(':','')[0:2]))   
+        minutes.append(int(time[d].split()[1].replace(':','')[2:4]))
+        datetime.append(dt.datetime(year, months[d], days[d], hours[d], minutes[d]))
+
+    years = list(np.array(days)*0 + year); del year
+    dates, datesnum = [], []
+
+    for year, month, day, hour, minute in zip(years, months, days, hours, minutes):
+        d = dt.datetime(year, month, day, hour)
+        dates.append( d )
+        datesnum.append( date2num(d) )
+
+    datetime = np.array(datetime)
+    datesnum = np.array(datesnum)
+
+    # PRE-PROCESSING DATA
+    window_len = 12
+    decmag = -22.3
+
+    for var in varlist:
+        if var != "sst":
+            exec('%s = remove_zeros(%s)' %(var, var))
+            exec('%s = smooth(%s, window_len)' %(var, var) )
+        else:
+            exec('%s = remove_zeros(%s)' %(var, var))
+            exec('%s = smooth(%s, 5)' %(var, var) )
 
 
-######## PLOT TEMP
-ax = fig.add_subplot(313)
-print ax.get_position().bounds
-plt.title(u'Sea surface temperature ($^\circ$C)', fontsize='smaller')
-# preparing arrays for colorfill
-ymin = 12
-ymax = 28   
-tempy = np.linspace(ymin, ymax, 100)
-tempx, tempy = np.meshgrid(datesnum, tempy)
-uplim = np.linspace(ymax+2, ymax+2, sst.size)
+    # PLOTTING
 
-ax.contourf(tempx, tempy, tempy, 60, cmap=plt.cm.RdBu_r)
-plt.plot(datesnum, sst, 'k-', linewidth=2)
-plt.fill_between(datesnum, uplim, sst, color= 'w')
-d = 5
-yoffset = ymax*0.03
-temp_label = map(int, sst)
-for i, tl in enumerate(temp_label[::d]):
-    ax.annotate(tl, (datesnum[::d][i], sst[::d][i]+yoffset), 
-              fontsize=10, fontstyle='italic', ha='center')
-ax.set_axis_off()
-# plotting dates
-ax = fig.add_axes([0.125, 0.04, 0.775, 0.05])
-ax.plot(datesnum, sst*0, 'w')
-ax.set_axis_off()
+    fig = plt.figure(facecolor='w', figsize=(17,10))
+    plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
+                     \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
 
-for d in np.arange(0, datesnum.size, 24):
-    label = dates[d].strftime('%d/%b')
-    ax.annotate(label, (datesnum[d], -0.8), 
-                fontweight='bold', ha='center')
-for d in np.arange(0, datesnum.size, 4):
-    label = dates[d].strftime('%Hh')
-    ax.annotate(label, (datesnum[d], 0.6), ha='center', fontsize=8)
-plt.axis([datesnum[0], datesnum[-1], -1, 1])
+    #### PLOT WIND & GUST  
+    ax = fig.add_subplot(311)
+    # print ax.get_position().bounds
+    plt.title(u'Wind & Gust (m/s)', fontsize='smaller')
+    # preparing arrays for colorfill
+    ymin = 0
+    ymax = 15
+    gy = np.linspace(ymin, ymax, 100)
+    gx, gy = np.meshgrid(datesnum, gy)
+    xlimit = np.linspace(0, gust.size, gust.size )
+    up = np.linspace(ymax+10, ymax+10, gust.size )
+
+    ax.contourf(gx, gy, gy, 100, alpha=1, cmap=plt.cm.hot_r)
+    ax.plot(datesnum, gust, 'w-')
+    ax.fill_between(datesnum, up, gust, color='w')
+    ax.plot(datesnum, wspd, 'k-', linewidth=2)
+    ax.set_axis_off()
+    ax.fill_between(datesnum, up, wspd, color='w', alpha=0.6)
+    # preparing arrays
+    wu, wv   = intdir2uv(wspd, wdir, decmag, 0)
+    wu2, wv2 = intdir2uv(wspd * 0 + 5, wdir, decmag, 0)
+    wu2, wv2 = wu2 * -1, wv2 * -1
+    gust_label, wind_label = map(int,gust), map(int,wspd)
+    d = 5
+    for r, gl in enumerate(gust_label[::d]):
+        ax.annotate(gl, (datesnum[::d][r], gust[::d][r] + 0.5), 
+                         fontsize=10, fontstyle='italic', alpha=0.5, ha='center')
+    for i, wl in enumerate(wind_label[::d]):
+        ax.annotate(wl, (datesnum[::d][i], wspd[::d][i] - 1.2), 
+                         fontsize=10, fontstyle='italic', ha='center')
+    ax.quiver(datesnum[::5], wspd[::5] - 1.8, wu2[::5], wv2[::5],
+              width=0.0015, scale=400, pivot='middle')
+    plt.axis([datesnum.min(), datesnum.max(), 0, ymax])
+
+    ####### PLOT SURFACE CURRENT
+    ax = fig.add_subplot(312)
+    # print ax.get_position().bounds
+    plt.title(u'Along-shelf surface flow (cm/s)', fontsize='smaller')
+    # preparing arrays for colorfill
+    cu, cv   = intdir2uv(cspd, cdir, decmag, 0)
+    ymax = 0.5  
+    cy = np.linspace(ymax*-1, ymax, 100)
+    x = np.linspace(0, cu.size, cu.size)
+    zr =  np.linspace(0, 0, cu.size)
+    cx, cy = np.meshgrid(datesnum, cy)
+    down = np.linspace(ymax*-1 -1, ymax*-1 -1, cu.size)
+    up  = np.linspace(ymax+1, ymax+1, cu.size)
+
+    plt.contourf(cx, cy, cy, 100, cmap=plt.cm.PRGn)       
+    plt.plot(datesnum, cu, 'k-', linewidth=2)
+    uplim, downlim = fill_polygons(cu)
+    plt.fill_between(datesnum, down, uplim, color='w')
+    plt.fill_between(datesnum, up, downlim, color='w')
+    ax.set_axis_off()
+
+    yoffset = ymax*0.1
+    curr_label = []
+    uan = np.abs(cu*100)
+
+    for l in range(len(cu)):
+      curr_label.append("%2d" %uan[l])
+
+    d = 5
+    for r, cl in enumerate(curr_label[::d]):
+        if cu[::d][r] >= 0:
+            off = yoffset
+        else:
+            off = yoffset*-2
+        ax.annotate(cl, (datesnum[::d][r], cu[::d][r]+off), 
+                  fontsize=10, fontstyle='italic', ha='center')
+    # preparing arrays
+    ux = cu*0
+    ux[np.where(ux > 0)] = 1
+    ux[np.where(ux < 0)] = -1
+    cu2, cv2 = intdir2uv(cspd*0 + 0.5, cdir, decmag, 0)
+
+    for r in np.arange(0, cu.size, d):
+        if cu[r] <= 0:
+            off = yoffset*2
+        else:
+            off = yoffset*-2
+        plt.quiver(datesnum[r], cu[r]+off, cu2[r], cv2[r], 
+               width=0.0015, scale=40, pivot='middle')   
+    plt.axis([datesnum.min(), datesnum.max(), ymax*-1, ymax])
 
 
-# plotting rise and set shades
-rise_and_set = []
+    ######## PLOT TEMP
+    ax = fig.add_subplot(313)
+    # print ax.get_position().bounds
+    plt.title(u'Sea surface temperature ($^\circ$C)', fontsize='smaller')
+    # preparing arrays for colorfill
+    ymin = 12
+    ymax = 28   
+    tempy = np.linspace(ymin, ymax, 100)
+    tempx, tempy = np.meshgrid(datesnum, tempy)
+    uplim = np.linspace(ymax+2, ymax+2, sst.size)
 
-for i in np.arange(0, datesnum.size, 24):
-    day = dt.date(years[i], months[i], days[i])
-    rise, sett = get_rise_set(day)
-    rise, sett = date2num(rise), date2num(sett)
-    rise_and_set.append([rise, sett])
+    ax.contourf(tempx, tempy, tempy, 60, cmap=plt.cm.RdBu_r)
+    plt.plot(datesnum, sst, 'k-', linewidth=2)
+    plt.fill_between(datesnum, uplim, sst, color= 'w')
+    d = 5
+    yoffset = ymax*0.03
+    temp_label = map(int, sst)
+    for i, tl in enumerate(temp_label[::d]):
+        ax.annotate(tl, (datesnum[::d][i], sst[::d][i]+yoffset), 
+                  fontsize=10, fontstyle='italic', ha='center')
+    ax.set_axis_off()
 
-ax = fig.add_axes([0.125, 0.07, 0.781, 0.8])
-night_fill(ax, rise_and_set)
-ax.set_axis_off()
+    # plotting dates
+    ax = fig.add_axes([0.125, 0.04, 0.775, 0.05])
+    ax.plot(datesnum, sst*0, 'w')
+    ax.set_axis_off()
+
+    for d in np.arange(0, datesnum.size, 24):
+        label = dates[d].strftime('%d/%b')
+        ax.annotate(label, (datesnum[d], -0.8), 
+                    fontweight='bold', ha='center')
+    for d in np.arange(0, datesnum.size, 4):
+        label = dates[d].strftime('%Hh')
+        ax.annotate(label, (datesnum[d], 0.6), ha='center', fontsize=8)
+    plt.axis([datesnum[0], datesnum[-1], -1, 1])
 
 
-plt.show()
-stop
+    # plotting rise and set shades
+    rise_and_set = []
 
-    # plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
-    # plt.close('all')
+    for i in np.arange(0, datesnum.size, 24):
+        day = dt.date(years[i], months[i], days[i])
+        rise, sett = get_rise_set(day, dst)
+        rise, sett = date2num(rise), date2num(sett)
+        rise_and_set.append([rise, sett])
 
+    ax = fig.add_axes([0.125, 0.07, 0.781, 0.8])
+    night_fill(ax, rise_and_set, datesnum, ymin, ymax)
+    ax.set_axis_off()
+
+
+
+    plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
+    plt.close('all')
+
+
+
+    # ########################################################################
+
+    # fig = plt.figure(facecolor='w', figsize=(17,10))
+    # plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
+    #                  \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
+
+    # # preparing arrays
+    # x, z = np.meshgrid(datesnum[:-1], np.array(depths))
+
+    # ax = fig.add_subplot(311)  
+    # plt.plot_date(datesnum[:-1], wspd[:-1]*0 + 17, 'w') 
+    # plt.title(u'Temperature ($^\circ$C)', fontsize='smaller')
+    # plt.contourf(x, -z, SST, np.arange(10, 25, 0.1))
+    # plt.colorbar(orientation='horizontal', shrink=1.2)
+    # plt.contour(x, -z, SST, [20, 20], colors='k')
+    # plt.ylabel("Depth [m]")
+
+    # ax = fig.add_subplot(212)  
 
