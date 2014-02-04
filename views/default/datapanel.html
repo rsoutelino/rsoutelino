@@ -1,20 +1,49 @@
-{{extend 'hm.html'}}
+{{extend 'hm.html'}} 
 
-<h1>Data Panel</h1>
+<style type="text/css"> .img{display: block; margin-left: auto; margin-right: auto} </style>
 
-<div class="row">
+<br>
+
+<h1>Meteoceanographic mooring data </h1>
+
+<p> Meteoceanographic conditions near Arraial do Cabo from the last
+seven days. The live data is available at the SIODOC Project <a href="http://siodoc.net" target="_blank">website</a>. </p>
+
+<div class="row"> 
     <div class="span12">
-               <img src="{{=URL('static','images/siodoc_tmp.png')}}" height="750" width="1500"/>
-       <div class="span6">
-       		<img src="{{=URL('static','images/tide.png')}}" height="200" width="500"/>
-       </div>
+          <a href= "http://siodoc.net" target="_blank"> <img class="img" src="{{=URL('static','images/map.png')}}" width="450"/> </a>
+    </div>
+</div>
+
+<h3>Winds, Surface currents and Sea surface temperature</h3>
+
+<div class="row"> 
+    <div class="span12">
+           <img src="{{=URL('static','images/siodoc_tmp.png')}}" height="750" width="1500"/>
     </div>
 </div>
 
 
+<br><br>
+
+<h3>Depth-dependent temperature and currents</h3>
+
+<div class="row"> 
+    <div class="span12">
+           <img src="{{=URL('static','images/siodoc_full.png')}}" height="750" width="1500"/>
+    </div>
+</div>
 
 
+<br><br>
 
+<h3>Tide prediction</h3>
+
+<div class="row"> 
+    <div class="span12">
+   		   <img class="img" src="{{=URL('static','images/tide.png')}}" height="200" width="500"/>
+    </div>
+</div>
 
 
 
