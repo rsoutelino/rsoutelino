@@ -4,5 +4,5 @@ databases/*
 databases
 databases/*.table
 static/tmp_files/*
-*.table
-*.pyc
+databases/*.table
+modules/*.pyc
