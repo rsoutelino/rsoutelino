@@ -2,5 +2,5 @@ sessions/*
 errors/*
 databases/*
 static/tmp_files/*
-*.table
-*.pyc
+databases/*.table
+modules/*.pyc
