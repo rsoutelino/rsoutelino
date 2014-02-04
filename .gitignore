@@ -1,6 +1,8 @@
 sessions/*
 errors/*
 databases/*
+databases
+databases/*.table
 static/tmp_files/*
 databases/*.table
 modules/*.pyc
