@@ -191,6 +191,8 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     # dst=True
     # filename = localpath + 'static/tmp_files/Data_month.csv_corrected'
 
+    window_len = 12
+    decmag = -22.3
 
     # READING DATA
     columns = defaultdict(list) 
@@ -212,11 +214,14 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     cdir = np.array(map(float, columns.values()[6][tlim:]))
     sst  = np.array(map(float, columns.values()[9][tlim:]))
 
+    # loading full temperature measurements
+
     depths = [0, 10, 15, 20, 25, 45]
 
     f = open(filename)
     lines = f.readlines()
     SST = np.zeros((len(depths), sst.size-1))
+
     c = 0
     for t in range(tlim, -1):
         SST[0,c] = float(lines[t].split(",")[-11])
@@ -227,10 +232,51 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
         SST[5,c] = float(lines[t].split(",")[-5])
         c += 1 
 
+    SST = remove_zeros(SST)
+
     for k in range(len(depths)):
         SST[k,:] = smooth(SST[k,:], 5)
 
-    SST = remove_zeros(SST)
+
+    # loading full current measurements
+
+    depths_c = [2, 10, 16, 20, 26, 30, 36]
+
+    f = open(filename)
+    lines = f.readlines()
+    CSPD = np.zeros((len(depths_c), cspd.size-1))
+    CDIR = np.zeros((len(depths_c), cspd.size-1))
+
+
+    c = 0
+    for t in range(tlim, -1):
+        CSPD[0,c] = float(lines[t].split(",")[21])
+        CSPD[1,c] = float(lines[t].split(",")[13])
+        CSPD[2,c] = float(lines[t].split(",")[14])
+        CSPD[3,c] = float(lines[t].split(",")[15])
+        CSPD[4,c] = float(lines[t].split(",")[16])
+        CSPD[5,c] = float(lines[t].split(",")[17])
+        CSPD[6,c] = float(lines[t].split(",")[18])
+
+        CDIR[0,c] = float(lines[t].split(",")[4])
+        CDIR[1,c] = float(lines[t].split(",")[5])
+        CDIR[2,c] = float(lines[t].split(",")[6])
+        CDIR[3,c] = float(lines[t].split(",")[7])
+        CDIR[4,c] = float(lines[t].split(",")[8])
+        CDIR[5,c] = float(lines[t].split(",")[9])
+        CDIR[6,c] = float(lines[t].split(",")[10])
+
+        c += 1 
+
+    # CSPD = remove_zeros(CSPD)
+    # for k in range(len(depths_c)):
+    #     CSPD[k,:] = smooth(CSPD[k,:], 5)
+
+    # CDIR = remove_zeros(CDIR)
+    # for k in range(len(depths_c)):
+    #     CDIR[k,:] = smooth(CDIR[k,:], 5)
+
+    CU, CV = intdir2uv(CSPD, CDIR, decmag, 0)
 
     time = columns.values()[44][tlim:]
     year = dt.datetime.now().year
@@ -256,8 +302,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     datesnum = np.array(datesnum)
 
     # PRE-PROCESSING DATA
-    window_len = 12
-    decmag = -22.3
+
 
     for var in varlist:
         if var != "sst":
@@ -413,26 +458,64 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
 
 
     plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
+    
+
+
+
+    ########################################################################
+
+    fig = plt.figure(facecolor='w', figsize=(17,10))
+    plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
+                     \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
+
+    # preparing arrays
+    x, z = np.meshgrid(datesnum[:-1], np.array(depths))
+
+    ax = fig.add_subplot(311)  
+    plt.plot_date(datesnum[:-1], wspd[:-1]*0 + 17, 'w') 
+    plt.title(u'Temperature ($^\circ$C)', fontsize='smaller')
+    plt.contourf(x, -z, SST, np.arange(10, 25, 0.1))
+    plt.colorbar(orientation='horizontal', aspect=40, shrink=0.5)
+    plt.contour(x, -z, SST, [20, 20], colors='k')
+    plt.ylabel("Depth [m]")
+    plt.axis([datesnum[0], datesnum[-1], -45, 0])
+
+
+    ax = fig.add_axes([0.125, 0.1, 0.775, 0.5]) 
+    plt.title(u'Velocity (cm/s)', fontsize='smaller')
+    plt.ylabel("Depth [m]")
+    c = 0
+    j = 2
+    for d in depths_c:
+        plt.quiver(datesnum[::j], datesnum[::j]*0-d,
+                   CU[c,::j], CV[c,::j], width=0.001, scale=1200)
+        c += 1
+    plt.quiver(datesnum[-10], -5, -50, 0, width=0.003, scale=1200)
+    plt.text(datesnum[-19], -7, "50 cm/s")
+    plt.axis([datesnum[0], datesnum[-1], -45, 5])
+    # ax.set_axis_off()
+    ax.set_xticklabels([])
+
+    ax = fig.add_axes([0.125, 0.07, 0.781, 0.83])
+    night_fill(ax, rise_and_set, datesnum, ymin, ymax)
+    ax.set_axis_off()
+
+    # plotting dates
+    ax = fig.add_axes([0.125, 0.04, 0.775, 0.05])
+    ax.plot(datesnum, sst*0, 'w')
+    ax.set_axis_off()
+
+    for d in np.arange(0, datesnum.size, 24):
+        label = dates[d].strftime('%d/%b')
+        ax.annotate(label, (datesnum[d], -0.8), 
+                    fontweight='bold', ha='center')
+    for d in np.arange(0, datesnum.size, 4):
+        label = dates[d].strftime('%Hh')
+        ax.annotate(label, (datesnum[d], 0.6), ha='center', fontsize=8)
+    plt.axis([datesnum[0], datesnum[-1], -1, 1])
+
+    plt.savefig(localpath + 'static/images/siodoc_full.png', dpi=96)
+
     plt.close('all')
 
-
-
-    # ########################################################################
-
-    # fig = plt.figure(facecolor='w', figsize=(17,10))
-    # plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
-    #                  \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
-
-    # # preparing arrays
-    # x, z = np.meshgrid(datesnum[:-1], np.array(depths))
-
-    # ax = fig.add_subplot(311)  
-    # plt.plot_date(datesnum[:-1], wspd[:-1]*0 + 17, 'w') 
-    # plt.title(u'Temperature ($^\circ$C)', fontsize='smaller')
-    # plt.contourf(x, -z, SST, np.arange(10, 25, 0.1))
-    # plt.colorbar(orientation='horizontal', shrink=1.2)
-    # plt.contour(x, -z, SST, [20, 20], colors='k')
-    # plt.ylabel("Depth [m]")
-
-    # ax = fig.add_subplot(212)  
 
