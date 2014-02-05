@@ -6,3 +6,4 @@ databases/*.table
 static/tmp_files/*
 databases/*.table
 modules/*.pyc
+*.pyc

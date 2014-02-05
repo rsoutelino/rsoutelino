@@ -6,11 +6,11 @@ import urllib2
 import numpy as np
 import csv
 import datetime as dt
-import matplotlib.dates as mdates
+# import matplotlib.dates as mdates
 from intdir2uv import intdir2uv
-from matplotlib.font_manager import FontProperties
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
+# from matplotlib.font_manager import FontProperties
+# from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+# from matplotlib.figure import Figure
 from collections import defaultdict
 from matplotlib.dates import date2num
 import ephem
@@ -40,7 +40,7 @@ def download_data():
     new_filename = filename + "_corrected"
     os.system("grep -v Brazil %s > %s" %(filename, new_filename) )
     os.system( "cp %s %sstatic/tmp_files/%s" %(new_filename, localpath, new_filename) )
-    os.system( "cp %s %sstatic/tmp_files/%s_%s" %(new_filename, localpath, 
+    os.system( "cp %s %sstatic/tmp_files/%s_%s" %(new_filename, localpath,
                                        filename[:10], str(dt.datetime.today())[:10]) )
     os.system( "rm Data_month*")
 
@@ -56,7 +56,7 @@ def smooth(x, window_len=200, window='hanning'):
     s = np.r_[2*x[0]-x[window_len-1::-1], x, 2*x[-1]-x[-1:-window_len:-1]]
     if window == 'flat': #moving average
         w = np.ones(window_len, 'd')
-    else:  
+    else:
         w = eval('np.' + window + '(window_len)')
         x = np.convolve(w / w.sum(), s, mode='same')
     return x[window_len : -window_len+1]
@@ -73,7 +73,7 @@ def fill_polygons(array):
     npol, ppol = [], []
     neg_zeros, pos_zeros = [], []
     uplim, downlim = np.array([]), np.array([])
-    
+
     for k in range( len(array) ):
         if array[k] < 0:
             neg.append(k)
@@ -84,19 +84,19 @@ def fill_polygons(array):
 
     k = -1
     for i in range( len(array) ):
-        try: 
+        try:
             if neg[i] != neg[i+1] - 1:
                 npol.append( array[ neg[k+1  : i+1] ] )
-                k = i  
+                k = i
         except IndexError:
             pass
 
     k = -1
     for i in range( len(array) ):
-        try: 
+        try:
             if pos[i] != pos[i+1] - 1:
                 ppol.append( array[ pos[k+1  : i+1] ] )
-                k = i   
+                k = i
         except IndexError:
             pass
 
@@ -105,20 +105,20 @@ def fill_polygons(array):
             neg_zeros.append(np.zeros(len(ppol[r])))
         except IndexError:
             pass
-   
+
     for r in range(len(npol)):
         try:
             pos_zeros.append(np.zeros(len(npol[r])))
         except IndexError:
             pass
-    
-    if array[0] > 0:        
+
+    if array[0] > 0:
         try:
             for k in range(len(ppol)):
                 downlim = np.concatenate((downlim,ppol[k]))
                 downlim = np.concatenate((downlim,pos_zeros[k]))
         except IndexError:
-            pass    
+            pass
 
         try:
             for k in range(len(neg_zeros)):
@@ -128,13 +128,13 @@ def fill_polygons(array):
             pass
 
     elif array[0] < 0:
-        
+
         try:
             for k in range(len(npol)):
                 uplim = np.concatenate((uplim,npol[k]))
                 uplim = np.concatenate((uplim,neg_zeros[k]))
         except IndexError:
-            pass    
+            pass
 
         try:
             for k in range(len(pos_zeros)):
@@ -143,7 +143,7 @@ def fill_polygons(array):
         except IndexError:
             pass
 
-    return uplim, downlim  
+    return uplim, downlim
 
 
 
@@ -160,8 +160,8 @@ def get_rise_set(day, dst):
         rise = rise + dt.timedelta(hours=1)
         sett = sett + dt.timedelta(hours=1)
     return rise, sett
-        
-    
+
+
 
 def night_fill(ax, rise_and_set, datesnum, ymin, ymax):
     for d in range(len(rise_and_set)):
@@ -179,11 +179,11 @@ def night_fill(ax, rise_and_set, datesnum, ymin, ymax):
             # print "MIDDLE"
 
         # ax.plot([left, right], [12, 12], 'k*')
-        ax.fill([left, right, right, left], [ymin, ymin, ymax, ymax], 
-             color='0.6', alpha='0.2')
+        ax.fill([left, right, right, left], [ymin, ymin, ymax, ymax],
+             color='0.6', alpha=0.2)
 
 
-###############################################################################################  
+###############################################################################################
 
 
 def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_corrected'):
@@ -195,19 +195,19 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     decmag = -22.3
 
     # READING DATA
-    columns = defaultdict(list) 
+    columns = defaultdict(list)
     with open(filename,'rU') as f:
-        reader = csv.DictReader(f) 
-        for row in reader: 
-            for (k,v) in row.items(): 
-                columns[k].append(v) 
+        reader = csv.DictReader(f)
+        for row in reader:
+            for (k,v) in row.items():
+                columns[k].append(v)
 
     varlist = ["gust", "wspd", "wdir", "cspd", "cdir", "sst"]
 
     date_window = 7
     tlim = -24 * date_window   # put date_window as function argument
 
-    gust = np.array(map(float, columns.values()[7][tlim:])) 
+    gust = np.array(map(float, columns.values()[7][tlim:]))
     wspd = np.array(map(float, columns.values()[3][tlim:]))
     wdir = np.array(map(float, columns.values()[19][tlim:]))
     cspd = np.array(map(float, columns.values()[32][tlim:]))/100
@@ -230,7 +230,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
         SST[3,c] = float(lines[t].split(",")[-8])
         SST[4,c] = float(lines[t].split(",")[-7])
         SST[5,c] = float(lines[t].split(",")[-5])
-        c += 1 
+        c += 1
 
     SST = remove_zeros(SST)
 
@@ -266,7 +266,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
         CDIR[5,c] = float(lines[t].split(",")[9])
         CDIR[6,c] = float(lines[t].split(",")[10])
 
-        c += 1 
+        c += 1
 
     # CSPD = remove_zeros(CSPD)
     # for k in range(len(depths_c)):
@@ -285,8 +285,8 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
 
     for d in range(len(time)):
         days.append(int(time[d].split()[0].replace('.','')[0:2]))
-        months.append(int(time[d].split()[0].replace('.','')[2:4]))    
-        hours.append(int(time[d].split()[1].replace(':','')[0:2]))   
+        months.append(int(time[d].split()[0].replace('.','')[2:4]))
+        hours.append(int(time[d].split()[1].replace(':','')[0:2]))
         minutes.append(int(time[d].split()[1].replace(':','')[2:4]))
         datetime.append(dt.datetime(year, months[d], days[d], hours[d], minutes[d]))
 
@@ -319,7 +319,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     plt.suptitle(u'Meteoceanographic Buoy ( SIODOC/IEAPM )\
                      \n$(lon: -42.18 \ \  lat: -22.99)$', fontsize='large')
 
-    #### PLOT WIND & GUST  
+    #### PLOT WIND & GUST
     ax = fig.add_subplot(311)
     # print ax.get_position().bounds
     plt.title(u'Wind & Gust (m/s)', fontsize='smaller')
@@ -344,10 +344,10 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     gust_label, wind_label = map(int,gust), map(int,wspd)
     d = 5
     for r, gl in enumerate(gust_label[::d]):
-        ax.annotate(gl, (datesnum[::d][r], gust[::d][r] + 0.5), 
+        ax.annotate(gl, (datesnum[::d][r], gust[::d][r] + 0.5),
                          fontsize=10, fontstyle='italic', alpha=0.5, ha='center')
     for i, wl in enumerate(wind_label[::d]):
-        ax.annotate(wl, (datesnum[::d][i], wspd[::d][i] - 1.2), 
+        ax.annotate(wl, (datesnum[::d][i], wspd[::d][i] - 1.2),
                          fontsize=10, fontstyle='italic', ha='center')
     ax.quiver(datesnum[::5], wspd[::5] - 1.8, wu2[::5], wv2[::5],
               width=0.0015, scale=400, pivot='middle')
@@ -359,7 +359,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     plt.title(u'Along-shelf surface flow (cm/s)', fontsize='smaller')
     # preparing arrays for colorfill
     cu, cv   = intdir2uv(cspd, cdir, decmag, 0)
-    ymax = 0.5  
+    ymax = 0.5
     cy = np.linspace(ymax*-1, ymax, 100)
     x = np.linspace(0, cu.size, cu.size)
     zr =  np.linspace(0, 0, cu.size)
@@ -367,7 +367,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     down = np.linspace(ymax*-1 -1, ymax*-1 -1, cu.size)
     up  = np.linspace(ymax+1, ymax+1, cu.size)
 
-    plt.contourf(cx, cy, cy, 100, cmap=plt.cm.PRGn)       
+    plt.contourf(cx, cy, cy, 100, cmap=plt.cm.PRGn)
     plt.plot(datesnum, cu, 'k-', linewidth=2)
     uplim, downlim = fill_polygons(cu)
     plt.fill_between(datesnum, down, uplim, color='w')
@@ -387,7 +387,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
             off = yoffset
         else:
             off = yoffset*-2
-        ax.annotate(cl, (datesnum[::d][r], cu[::d][r]+off), 
+        ax.annotate(cl, (datesnum[::d][r], cu[::d][r]+off),
                   fontsize=10, fontstyle='italic', ha='center')
     # preparing arrays
     ux = cu*0
@@ -400,8 +400,8 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
             off = yoffset*2
         else:
             off = yoffset*-2
-        plt.quiver(datesnum[r], cu[r]+off, cu2[r], cv2[r], 
-               width=0.0015, scale=40, pivot='middle')   
+        plt.quiver(datesnum[r], cu[r]+off, cu2[r], cv2[r],
+               width=0.0015, scale=40, pivot='middle')
     plt.axis([datesnum.min(), datesnum.max(), ymax*-1, ymax])
 
 
@@ -411,7 +411,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     plt.title(u'Sea surface temperature ($^\circ$C)', fontsize='smaller')
     # preparing arrays for colorfill
     ymin = 12
-    ymax = 28   
+    ymax = 28
     tempy = np.linspace(ymin, ymax, 100)
     tempx, tempy = np.meshgrid(datesnum, tempy)
     uplim = np.linspace(ymax+2, ymax+2, sst.size)
@@ -423,7 +423,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     yoffset = ymax*0.03
     temp_label = map(int, sst)
     for i, tl in enumerate(temp_label[::d]):
-        ax.annotate(tl, (datesnum[::d][i], sst[::d][i]+yoffset), 
+        ax.annotate(tl, (datesnum[::d][i], sst[::d][i]+yoffset),
                   fontsize=10, fontstyle='italic', ha='center')
     ax.set_axis_off()
 
@@ -434,7 +434,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
 
     for d in np.arange(0, datesnum.size, 24):
         label = dates[d].strftime('%d/%b')
-        ax.annotate(label, (datesnum[d], -0.8), 
+        ax.annotate(label, (datesnum[d], -0.8),
                     fontweight='bold', ha='center')
     for d in np.arange(0, datesnum.size, 4):
         label = dates[d].strftime('%Hh')
@@ -458,7 +458,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
 
 
     plt.savefig(localpath + 'static/images/siodoc_tmp.png', dpi=96)
-    
+
 
 
 
@@ -471,8 +471,8 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     # preparing arrays
     x, z = np.meshgrid(datesnum[:-1], np.array(depths))
 
-    ax = fig.add_subplot(311)  
-    plt.plot_date(datesnum[:-1], wspd[:-1]*0 + 17, 'w') 
+    ax = fig.add_subplot(311)
+    plt.plot_date(datesnum[:-1], wspd[:-1]*0 + 17, 'w')
     plt.title(u'Temperature ($^\circ$C)', fontsize='smaller')
     plt.contourf(x, -z, SST, np.arange(10, 25, 0.1))
     plt.colorbar(orientation='horizontal', aspect=40, shrink=0.5)
@@ -481,7 +481,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     plt.axis([datesnum[0], datesnum[-1], -45, 0])
 
 
-    ax = fig.add_axes([0.125, 0.1, 0.775, 0.5]) 
+    ax = fig.add_axes([0.125, 0.1, 0.775, 0.5])
     plt.title(u'Velocity (cm/s)', fontsize='smaller')
     plt.ylabel("Depth [m]")
     c = 0
@@ -507,7 +507,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
 
     for d in np.arange(0, datesnum.size, 24):
         label = dates[d].strftime('%d/%b')
-        ax.annotate(label, (datesnum[d], -0.8), 
+        ax.annotate(label, (datesnum[d], -0.8),
                     fontweight='bold', ha='center')
     for d in np.arange(0, datesnum.size, 4):
         label = dates[d].strftime('%Hh')
