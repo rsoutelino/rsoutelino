@@ -4,6 +4,8 @@ databases/*
 databases
 databases/*.table
 static/tmp_files/*
+static/images/*.png
 databases/*.table
 modules/*.pyc
 *.pyc
+*.png
