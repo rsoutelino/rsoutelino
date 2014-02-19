@@ -30,4 +30,4 @@ plotMare(time2, h2, station, date, rise_set_times, True, web2pyPath)
 
 # SIODOC
 download_data()
-plot(dst=True)
+plot(dst=False)
