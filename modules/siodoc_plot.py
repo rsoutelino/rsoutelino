@@ -202,7 +202,7 @@ def night_fill(ax, rise_and_set, datesnum, ymin, ymax):
 
         # ax.plot([left, right], [12, 12], 'k*')
         ax.fill([left, right, right, left], [ymin, ymin, ymax, ymax], 
-             color='0.6', alpha='0.2')
+             color='0.6', alpha=0.2)
 
 
 ###############################################################################################  
@@ -406,7 +406,7 @@ def plot(dst=False, filename=localpath + 'static/tmp_files/Data_month.csv_correc
     plt.title(u'Along-shelf surface flow (cm/s)', fontsize='smaller')
     # preparing arrays for colorfill
     cu, cv   = intdir2uv(cspd, cdir, decmag, 0)
-    ymax = 0.5  
+    ymax = 0.8  
     cy = np.linspace(ymax*-1, ymax, 100)
     x = np.linspace(0, cu.size, cu.size)
     zr =  np.linspace(0, 0, cu.size)
