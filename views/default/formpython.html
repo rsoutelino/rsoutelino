@@ -1,20 +1,19 @@
 {{extend 'hm.html'}}
 
-<br><br>
+<!-- <br><br>
 {{for arquivo in tmp:
 }}
-<!--
+
 <button class="btn btn-smaller">
 <a href="{{=URL("default","download",args=arquivo.file_arquivo)}}"> Download de material didático </a>
 </button>
--->
 
 <br><br>
 {{pass}}
-
+ -->
 <br><br>
 
-<h2>Dicas de introdução ao Python como ferramenta para Oceanógrafos </h2>
+<h2>Curso de introdução ao Python como ferramenta para Oceanógrafos </h2>
     <p>
         Python é uma linguagem de programação interpretada que pode ser usada
         interativamente. Isto facilita o desenvolvimento de códigos científicos
@@ -22,7 +21,7 @@
         Adicionalmente, o Python por si só possui uma extensa gama de módulos
         para executar tarefas do dia a dia de um usuário de sistema operacional,
         que usualmente requerem o uso de múltiplas linguagens. A base de
-        toolboxes voltadas à computacão científica, disponíveis gratuitamente,
+        ferramentas voltadas à computacão científica, disponíveis gratuitamente,
         é notavelmente extensa. Módulos como Numpy, Scipy e Matplotlib
         possibilitam a execucão de tarefas complexas com matrizes de dados,
         com bibliotecas matemáticas para manipulacão e análise de dados. Python
@@ -35,6 +34,9 @@
         mar e 4) visualizacão gráfica/plotagem de dados totalmente customizável,
         com qualidade para publicacão. Python é ideal para lidar com pré- e
         pós-processamento associados a modelagem numérica.
+        <br>
+        O repositório git do curso contém o material didático relevante: 
+        <a href="https://github.com/rsoutelino/uerj_ocn_2014" target="_blank">GitHub - rsoutelino</a>
     </p>
 
     <br>
@@ -51,13 +53,10 @@
             Entretanto, muitas desvantagens e problemas associados ao uso do
             MATLAB podem ser citados, e são amplamente conhecidos pela comunidade.
             Lentidão, instabilidade, vazamentos de memória, bugs em geracão de
-            figuras, servidores de licensa e código fechado são exemplos. Todos
-            convivem com estes problemas porque até certo ponto era a única
-            ferramenta disponível nesse segmento. É uma linguagem flexível,
+            figuras, servidores de licensa e código fechado são exemplos.
+            É uma linguagem flexível,
             dinâmica, e uma vez que aprende-se a trabalhar neste arcabouço
-            matricial, ela pode ser rápida e poderosa. Em síntese, usamos MATLAB
-            praticamente pela mesma razão que usamos qualquer ferramenta: não
-            tem nada melhor disponível. Migrar para uma outra linguagem implica
+            matricial, ela pode ser rápida e poderosa. Migrar para uma outra linguagem implica
             no aprendizado de um novo conjunto de técnicas de programação e
             geração de uma nova gama de toolboxes. Este investimento inicial
             certamente demanda tempo, portanto espera-se que haja importantes
@@ -86,7 +85,7 @@
             <h5> Algumas vantagens do Python em relação ao Matlab:</h5>
             <br>
             <ul>
-                <li> Python é uma linguagem de script verdadeira e poderosa. Módulos
+                <li> Python é uma linguagem de script completa e poderosa. Módulos
                     científicos são escritos nesta filosofia. Por exemplo, a criação de
                     classes é muito simples e funcões podem ser passadas como argumentos
                     de classes ou outras funções, funcionalidade esta não disponível no
@@ -95,7 +94,7 @@
                 <li> É fácil de portar códigos escritos em C e Fortran. Existem
                     inúmeras ferramentas para isto e a maioria das ferramentas
                     científicas já escritas em Python se aproveitam disso, então
-                    o código roda super-rápido.
+                    o código roda super rápido.
                 <li> Python é <strong>open source, gratuito</strong>, portável,
                     está em constante desenvolvimento e lançamento de novas versões
                     ocorrem com uma frequência muito maior que no MATLAB. A comunidade
@@ -108,28 +107,39 @@
 <br>
 <h2>Estrutura do Curso</h2>
 <br>
-<ul>    Em breve
-<!--    <li> <strong> Aula 1: </strong> Conceitos básicos de Python e instalação.
-        Listas, tuplas dicionários, strings, condicionais, loops, exceções. Programação
-        abstrata. Manipulacão de arquivos. Tutoriais de instalação do Python,
-        bibliotecas básicas e ferramentas para programação em modo interativo
-        (em sistema Linux).
-    <li> <strong> Aula 2: </strong> Python para geocientistas, Módulo 1: trabalhando
+<ul>  
+    <li> <strong> Aula 1: </strong> Conceitos de produtividade, reproducibilidade e trabalho colaborativo. 
+        Introdução das ferramentas de produtividade (editores de texto, python, git) 
+        e preparação dos computadores.
+        Conceitos básicos de python: Listas, tuplas dicionários, strings, condicionais, loops, exceções. 
+        Programação abstrata. Trabalhando
         com arrays (matrizes). Criação e manipulação de arrays usando o Numpy.
         Indexação, fatiamento e operações com arrays. Manipulações básicas de dados,
-        como interpolacões e aplicação de máscara. Leitura de dados ascii. Plotagem
-        uni- e bi-dimensional de dados.
-    <li> <strong> Aula 3: </strong> Python para geocientistas, Módulo 2: trabalhando
-        netCDF e mapas. Leitura e criação de arquivos netCDF. Manipulacão e investigação
-        de grandes conjuntos de dados. Plotagem de dados em mapas.
-    <li> <strong> Aula 4: </strong> Técnicas avançadas de programação científica.
+        como interpolacões e filtros. Leitura de dados ascii. Exemplo prático de leitura e plotagem
+        de dados de CTD. 
+    <li> <strong> Aula 2: </strong> Técnicas intermediárias de programação científica.
         Interação com o sistema, automatização de tarefas, interação com arquivos.
-        Orientação à objeto, funções, classes, encapsulamento. Desenvolvimento de
-        interface gráfica. -->
+        Orientação à objeto, funções, classes, encapsulamento. Desenvolvimento de software: tornando
+        o programa re-utilizável. Determinando propósitos do software, requerimentos. Trabalho colaborativo: 
+        contrubuindo coletivamente a uma mesma base de códigos, dividindo/delegando tarefas, comunicação eficiente,
+        desenvolvimento simultâneo sem conflitos. 
+        Preparando um pacote para distrubuição: determinando inputs, funcionalidades e outputs, 
+        escrevendo documentação. 
 </ul> 
 
 <br>
-<h2> Tutorial de instalação </h2>
+<h2>Tarefa prática</h2>
+<br>
+<ul> 
+    <p> Consiste em elaborar um pacote simples e útil para leitura, tratamento e visualização de dados de CTD. Este deve
+        preencher requisitos mínimos de desenvolvimento e compartilhamento de software livre. 
+        <li> bla bla. 
+        <li> bla bla 
+    </p>
+</ul> 
+
+<br>
+<h2> Tutoriais de instalação </h2>
 <br>
     <p>
        Aqui forneceremos dicas para fazer uma instalação de python com bibliotecas para uso científico.
@@ -184,9 +194,13 @@
         <li> <a href="http://www.imr.no/~bjorn/python/links.html" target="_blank">Links</a> úteis para oceanógrafos que usam Python.
         <li> <a href="http://mathesaurus.sourceforge.net/matlab-numpy.html" target="_blank">Mathesaurus</a>: correspondência de comandos entre MATLAB e Numpy.
         <li> <a href="http://www.scipy.org/" target="_blank">Scipy</a>: maior biblioteca científica escrita em Python.
+        <li> <a href="http://pandas.pydata.org/" target="_blank">Pandas</a>: excelente biblioteca para análise de séries temporais.
         <li> <a href="http://matplotlib.org/" target="_blank">Matplotlib</a>: biblioteca de visualização de dados mais utilizada, com sintaxe similar ao MATLAB.
+        <li> <a href="http://scitools.org.uk/iris/docs/latest/index.html" target="_blank">Iris</a>: poderosa biblioteca para visualização de dados meteorológicos e oceanográficos.
+        <li> <a href="http://web.stanford.edu/~mwaskom/software/seaborn/index.html" target="_blank">Seaborn</a>: visualização estatística de dados.
         <li> <a href="http://hetland.org/writing/instant-python.html" target="_blank">Hetland.org</a>: curso relâmpago de Python.
-        <li> <a href="http://ocefpaf.github.io/" target="_blank">Python4oceanographers</a>: blog muito útil para análise de dados (e mais...) usando python.
+        <li> <a href="http://ocefpaf.github.io/" target="_blank">Python4oceanographers</a>: blog muito útil para análise de dados (e mais...) usando python. 
+        <li> <a href="http://software-carpentry.org/lessons.html" target="_blank">Software Carpentry</a>: desenvolvimento de software para uso científico.
         <li> <a href="http://www.python.org/dev/peps/pep-0008/" target="_blank">Pep8</a>: guia de estilo e convenções para código Python. (último, mas não menos importante)
     </ul>
 
