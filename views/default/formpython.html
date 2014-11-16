@@ -3,10 +3,11 @@
 <br><br>
 {{for arquivo in tmp:
 }}
-
+<!--
 <button class="btn btn-smaller">
 <a href="{{=URL("default","download",args=arquivo.file_arquivo)}}"> Download de material didático </a>
 </button>
+-->
 
 <br><br>
 {{pass}}
@@ -171,9 +172,8 @@
                     mais recente para sua arquitetura.
                 <li> <p style="font-family:monospace"> <code> sudo apt-get install
                     python-scipy python-matplotlib python-mpltoolkits.basemap
-                    ipython python-pip python-setuptools python-wxtools
-                    python-wxversion python-netcdf </code> </p>
-                <li> <p style="font-family:monospace"> <code> sudo easy_install seawater pydap wx netcdf4 </code> </p>
+                    ipython python-pip python-setuptools python-netcdf python-pandas </code> </p>
+                <li> <p style="font-family:monospace"> <code> sudo easy_install seawater pydap netcdf4 </code> </p>
             </ul>
         </p>
 <br>
